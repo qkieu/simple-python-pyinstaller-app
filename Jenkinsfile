@@ -2,6 +2,11 @@ pipeline {
     agent none
     stages {
         stage('Build') {
+            agent {
+                docker {
+                    image 'python:2-alpine'
+                }
+            }
             input {
                 message "What what?"
                 ok "Just go on."
@@ -13,11 +18,6 @@ pipeline {
                     parameters { choice(name: 'CHOICES', choices: ['one', 'two', 'three'], description: '') }
                     parameters { file(name: 'FILE', description: 'Some file to upload') }
                     parameters { password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'A secret password') }
-                }
-            }
-            agent {
-                docker {
-                    image 'python:2-alpine'
                 }
             }
             steps {
