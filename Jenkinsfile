@@ -11,7 +11,7 @@ pipeline {
                     text(name: 'DEPLOY_TEXT', defaultValue: 'One\nTwo\nThree\n', description: '')
                     booleanParam(name: 'DEBUG_BUILD', defaultValue: true, description: '')
                     choice(name: 'CHOICES', choices: ['one', 'two', 'three'], description: '')
-                    file(name: 'FILE', description: 'Some file to upload') }
+                    file(name: 'FILE', description: 'Some file to upload')
                     password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'A secret password')
                 }
             }
