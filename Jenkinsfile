@@ -7,10 +7,10 @@ pipeline {
                 ok "Just go on."
                 submitter "juba"
                 parameters {
-                    string(name: 'DEPLOY_ENV', defaultValue: 'staging', description: '')
-                    text(name: 'DEPLOY_TEXT', defaultValue: 'One\nTwo\nThree\n', description: '')
-                    booleanParam(name: 'DEBUG_BUILD', defaultValue: true, description: '')
-                    choice(name: 'CHOICES', choices: ['one', 'two', 'three'], description: '')
+                    string(name: 'DEPLOY_ENV', defaultValue: 'staging', description: 'Heheheh')
+                    text(name: 'DEPLOY_TEXT', defaultValue: 'One\nTwo\nThree\n', description: 'Heh')
+                    booleanParam(name: 'DEBUG_BUILD', defaultValue: true, description: 'Some other choice')
+                    choice(name: 'CHOICES', choices: ['one', 'two', 'three'], description: 'Some choice')
                     // file(name: 'FILE', description: 'Some file to upload')
                     password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'A secret password')
                 }
