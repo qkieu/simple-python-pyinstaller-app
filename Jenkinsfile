@@ -2,22 +2,22 @@ pipeline {
     agent none
     stages {
         stage('Build') {
-            agent {
-                docker {
-                    image 'python:2-alpine'
-                }
-            }
             input {
                 message "What what?"
                 ok "Just go on."
                 submitter "juba"
                 parameters {
-                    parameters { string(name: 'DEPLOY_ENV', defaultValue: 'staging', description: '') }
-                    parameters { text(name: 'DEPLOY_TEXT', defaultValue: 'One\nTwo\nThree\n', description: '') }
-                    parameters { booleanParam(name: 'DEBUG_BUILD', defaultValue: true, description: '') }
-                    parameters { choice(name: 'CHOICES', choices: ['one', 'two', 'three'], description: '') }
-                    parameters { file(name: 'FILE', description: 'Some file to upload') }
-                    parameters { password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'A secret password') }
+                    string(name: 'DEPLOY_ENV', defaultValue: 'staging', description: '')
+                    text(name: 'DEPLOY_TEXT', defaultValue: 'One\nTwo\nThree\n', description: '')
+                    booleanParam(name: 'DEBUG_BUILD', defaultValue: true, description: '')
+                    choice(name: 'CHOICES', choices: ['one', 'two', 'three'], description: '')
+                    file(name: 'FILE', description: 'Some file to upload') }
+                    password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'A secret password')
+                }
+            }
+            agent {
+                docker {
+                    image 'python:2-alpine'
                 }
             }
             steps {
