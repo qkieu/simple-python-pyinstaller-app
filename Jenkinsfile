@@ -12,19 +12,36 @@ pipeline {
             }
         }
         stage('Test-Test') {
-            agent {
-                docker {
-                    image 'qnib/pytest'
+            parallel {
+                stage('Test 1') {
+                    agent {
+                        docker {
+                            image 'qnib/pytest'
+                        }
+                    }
+                    steps {
+                        sh 'py.test -v --junit-xml test-reports/results.xml sources/test_calc.py'
+                    }
+                    post {
+                        always {
+                            junit '**/test-reports/*.xml'
+                        }
+                    }
                 }
-            }
-            steps {
-                sh 'py.test -v --junit-xml test-reports/results.xml sources/test_calc.py'
-                sh 'py.test -v --junit-xml test-reports/results2.xml sources/test_calc.py'
-            }
-            post {
-                always {
-                    junit 'test-reports/results.xml'
-                    junit 'test-reports/results2.xml'
+                stage('Test 2') {
+                    agent {
+                        docker {
+                            image 'qnib/pytest'
+                        }
+                    }
+                    steps {
+                        sh 'py.test -v --junit-xml test-reports/results.xml sources/test_calc.py'
+                    }
+                    post {
+                        always {
+                            junit '**/test-reports/*.xml'
+                        }
+                    }
                 }
             }
         }
