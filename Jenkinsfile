@@ -2,19 +2,6 @@ pipeline {
     agent none
     stages {
         stage('Build') {
-            input {
-                message "What what?"
-                ok "Just go on."
-                submitter "juba"
-                parameters {
-                    string(name: 'DEPLOY_ENV', defaultValue: 'staging', description: 'Heheheh')
-                    text(name: 'DEPLOY_TEXT', defaultValue: 'One\nTwo\nThree\n', description: 'Heh')
-                    booleanParam(name: 'DEBUG_BUILD', defaultValue: true, description: 'Some other choice')
-                    choice(name: 'CHOICES', choices: ['one', 'two', 'three'], description: 'Some choice')
-                    // file(name: 'FILE', description: 'Some file to upload')
-                    password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'A secret password')
-                }
-            }
             agent {
                 docker {
                     image 'python:2-alpine'
@@ -32,10 +19,12 @@ pipeline {
             }
             steps {
                 sh 'py.test -v --junit-xml test-reports/results.xml sources/test_calc.py'
+                sh 'py.test -v --junit-xml test-reports/results2.xml sources/test_calc.py'
             }
             post {
                 always {
                     junit 'test-reports/results.xml'
+                    junit 'test-reports/results2.xml'
                 }
             }
         }
