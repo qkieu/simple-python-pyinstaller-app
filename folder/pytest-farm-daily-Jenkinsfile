@@ -81,7 +81,8 @@ def taskmap = [:]
 some_node = node {
     stage('get files') {
         echo "getting taskmap"
-        taskmap = readJSON file : 'folder/taskmap.json'
+        def workspace = pwd() 
+        taskmap = readJSON file : "${workspace}/folder/taskmap.json"
         assert taskmap.farm1.ip == "0.0.0"
         echo "done getting taskmap"
     }
