@@ -62,7 +62,7 @@ def generateTestNode(setup) {
     return {
         node {
             stage("${setup.'name'}: checkout on ${NODE_NAME}") {
-                echo "Checkout here"
+                checkout scm;
             }
 
             //////////////////////////////    
