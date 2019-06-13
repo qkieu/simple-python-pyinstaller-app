@@ -2,6 +2,8 @@
 
 // Add the name of a failing stage to this list
 failedStages = [];
+// This is used in sendStatusNotifications and typically summarizes which steps failed
+statusDetails = '';
 // git commit sha variable
 gitCommitSHA = '';
 // git checkout variables
