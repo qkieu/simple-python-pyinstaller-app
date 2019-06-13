@@ -1,0 +1,12 @@
+{
+    "farm1"         : {
+        "ip"            : "0.0.0",
+        "daily_configs" : "./configs/sample_config.json ./configs/sample_config.json",
+        "pr_configs"    : "./configs/sample_config.json"
+    },
+    "farm2"         : {
+        "ip"            : "0.0.0",
+        "daily_configs" : "./configs/sample_config.json",
+        "pr_configs"    : "./configs/sample_config.json ./configs/sample_config.json"
+    }
+}
