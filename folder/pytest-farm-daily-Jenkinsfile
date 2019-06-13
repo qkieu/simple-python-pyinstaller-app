@@ -18,7 +18,7 @@ node {
     }
 }
 
-def par_tasks = [:]
+def test_tasks = [:]
 
 taskmap.each { taskname, tasksettings -> 
     def setup = [:]
@@ -31,7 +31,7 @@ taskmap.each { taskname, tasksettings ->
     test_tasks[taskname] = utils.generateTestNode(setup);
 }
 
-parallel(par_tasks)
+parallel(test_tasks)
 
 node {
     stage('test') {
