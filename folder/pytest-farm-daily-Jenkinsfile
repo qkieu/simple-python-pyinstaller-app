@@ -7,9 +7,9 @@
 // Load utilities
 
 // Git banches and notifiers
-scmBranchName = 'pull-requests/$PULL_REQUEST_ID/merge';
-scmRemoteRefs = '+refs/heads/*:refs/remotes/origin/* +refs/pull-requests/*:refs/remotes/origin/pull-requests/*';
-usersToNotify = params.EMAIL_LIST.split("\\r?\\n")
+// scmBranchName = 'pull-requests/$PULL_REQUEST_ID/merge';
+// scmRemoteRefs = '+refs/heads/*:refs/remotes/origin/* +refs/pull-requests/*:refs/remotes/origin/pull-requests/*';
+// usersToNotify = params.EMAIL_LIST.split("\\r?\\n")
 
 // def taskmap = readJSON file : "${workspace}@script/taskmap.json";
 
