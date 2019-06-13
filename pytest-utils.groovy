@@ -66,7 +66,7 @@ def listTests(configFiles) {
 
 def generateTestNode(setup) {
     return {
-        node("linux") {
+        node {
             stage("${setup.'name'}: checkout on ${NODE_NAME}") {
                 // Checkout without clean
                 // utils.doCheckout(false)
