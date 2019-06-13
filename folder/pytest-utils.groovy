@@ -32,8 +32,8 @@ def runTests(boardName, boardIp, configFiles, testStrings = "") {
         * setup packages for tests
         * run pytest with unit IP and configFiles
     */
-    sh "#!/bin/bash\n \
-        echo $PWD \
+    sh "#!/bin/bash\n cd folder \
+        && echo $PWD \
         && ls"
 
     // junit(allowEmptyResults: true, testResults: '**/tmp/*_result.xml')
@@ -70,18 +70,16 @@ def generateTestNode(setup) {
             //////////////////////////////
 
             stage("${setup.'name'} tests") {
-                dir('folder') {
-                    pwd()
-                    try {
-                        sayHi("Running ${setup.'configs'}");
-                        runTests(setup.'name', setup.'ip', setup.'configs', setup.'tests');
-                        currentBuild.result = 'SUCCESS';
-                    } catch(err) {
-                        currentBuild.result = 'FAILURE';
-                        failedStages.add("${setup.'name'} tests");
-                        //sendMyNotifications();
-                        throw err;
-                    }
+                pwd()
+                try {
+                    sayHi("Running ${setup.'configs'}");
+                    runTests(setup.'name', setup.'ip', setup.'configs', setup.'tests');
+                    currentBuild.result = 'SUCCESS';
+                } catch(err) {
+                    currentBuild.result = 'FAILURE';
+                    failedStages.add("${setup.'name'} tests");
+                    //sendMyNotifications();
+                    throw err;
                 }
             }
         }
