@@ -2,41 +2,26 @@
 
 // Jenkinsfile for manual build
 
-// Imports
-import groovy.json.JsonSlurper
+taskmap = [:];
+utils = [:];
 
-// Load utilities
 node {
-    def workspace = pwd() 
-    def utils = load "${workspace}@script/pytest-utils.groovy"
+    stage('get files') {
+        checkout scm;
+        echo "getting taskmap";
+        taskmap = readJSON file : "folder/taskmap.json";
+        assert taskmap.farm1.ip == "0.0.0";
+        echo "done getting taskmap";
+        echo "====================";
+        echo "loading utils";
+        utils = load "folder/pytest-utils.groovy";
+        assert utils.echoDebug("hi") == "hi";
+        echo "done loading utils"
+    }
 }
-
-// Git banches and notifiers
-scmBranchName = '*/master'
-scmRemoteRefs = ''
-usersToNotify = params.EMAIL_LIST.split("\\r?\\n")
-
-/////////////////////////////////
-// TODO: Implement build tests //
-/////////////////////////////////
-
-// // Bitbucket parameters used here
-// echoDebug("FROM_HASH: ${params.PULL_REQUEST_FROM_HASH}")
-// echoDebug("AUTHOR_EMAIL: ${params.PULL_REQUEST_AUTHOR_EMAIL}")
-// echoDebug("PR_ID: ${params.PULL_REQUEST_ID}")
-// // Bitbucket parameters not used here
-// echoDebug("FROM_REPO: ${params.PULL_REQUEST_FROM_SSH_CLONE_URL}")
-// echoDebug("FROM_BRANCH: ${params.PULL_REQUEST_FROM_BRANCH}")
-// echoDebug("TO_REPO: ${params.PULL_REQUEST_TO_SSH_CLONE_URL}")
-// echoDebug("TO_HASH: ${params.PULL_REQUEST_TO_HASH}")
-// echoDebug("TO_BRANCH: ${params.PULL_REQUEST_TO_BRANCH}")
-// echoDebug("AUTHOR_NAME: ${params.PULL_REQUEST_AUTHOR_DISPLAY_NAME}")
-// echoDebug("PR_REVIEWERS: ${params.PULL_REQUEST_REVIEWERS_EMAIL}")
 
 def test_tasks = [:]
 
-File f = new File('taskmap.json');
-def taskmap = new JsonSlurper().parseText(f.text);
 
 setup = [:]
 setup.'name'    = '';
@@ -46,8 +31,8 @@ setup.'tests'   = '';
 setup.'type'    = '';      // Manual input vs getting from daily and pr
 
 // Run agent tasks in parallel
-node {
-    checkout scm
+// node {
+//     checkout scm
     stage('Specify IP and Configs') {
         setup.'type' =  input(   
                             message: 'Unit IP and Config files', ok: 'Continue',
@@ -99,7 +84,7 @@ node {
         //     }
         // }
     }
-}
+// }
 
 utils.generateTestNode(setup).call();
 
