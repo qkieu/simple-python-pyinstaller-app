@@ -32,13 +32,8 @@ def runTests(boardName, boardIp, configFiles, testStrings = "") {
         * run pytest with unit IP and configFiles
     */
     sh "#!/bin/bash\n \
-        && source ./setup.sh \
-        && python3 -m runtest \
-            --name ${boardName} \
-            --ip ${boardIp} \
-            --configs ${configFiles} \
-            --run=${testStrings} \
-        && deactivate"
+        && python -m py_compile sources/add2vals.py sources/calc.py \
+        && py.test -v --junit-xml tmp/test_results.xml sources/test_calc.py"
 
     // store xml results on build run.  The 'Test Result' is shown on the
     // build number
