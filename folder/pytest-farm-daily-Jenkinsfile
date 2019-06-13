@@ -3,7 +3,7 @@
 taskmap = [:];
 utils = [:];
 
-{ 
+node {
     stage('get files') {
         checkout scm;
         echo "getting taskmap";
