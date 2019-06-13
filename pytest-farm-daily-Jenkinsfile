@@ -16,16 +16,17 @@ node {
     def taskmap = new JsonSlurper().parseText(f.text);
 
     taskmap.each { taskname, tasksettings ->
-    def setup = [:]
-    setup.'name'    = taskname;
-    setup.'ip'      = tasksettings.ip;
-    setup.'configs' = tasksettings.daily_configs;
-    setup.'tests'   = '';
-    setup.'type'    = 'pr_configs';
+        def setup = [:]
+        setup.'name'    = taskname;
+        setup.'ip'      = tasksettings.ip;
+        setup.'configs' = tasksettings.daily_configs;
+        setup.'tests'   = '';
+        setup.'type'    = 'pr_configs';
 
-    test_tasks[taskname] = utils.generateTestNode(setup);
+        test_tasks[taskname] = utils.generateTestNode(setup);
 
-    parallel(test_tasks)
+        parallel(test_tasks);
+    }
 }
 
 // Git banches and notifiers
