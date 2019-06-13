@@ -3,7 +3,6 @@
 // Jenkinsfile for daily build
 
 // Imports
-import groovy.json.JsonSlurper
 
 // Load utilities
 
@@ -12,8 +11,7 @@ node {
     def utils = load "${workspace}@script/pytest-utils.groovy"
     def test_tasks = [:];
 
-    File f = new File("${workspace}@script/taskmap.json");
-    def taskmap = new JsonSlurper().parseText(f.text);
+    def taskmap = readJSON file : "${workspace}@script/taskmap.json";
 
     taskmap.each { taskname, tasksettings ->
         def setup = [:]
