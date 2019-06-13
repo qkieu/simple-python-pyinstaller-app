@@ -70,6 +70,7 @@ def generateTestNode(setup) {
 
             stage("${setup.'name'} tests") {
                 dir('folder') {
+                    pwd()
                     try {
                         sayHi("Running ${setup.'configs'}");
                         runTests(setup.'name', setup.'ip', setup.'configs', setup.'tests');
