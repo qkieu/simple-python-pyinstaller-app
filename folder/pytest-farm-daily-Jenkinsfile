@@ -3,17 +3,19 @@
 taskmap = [:];
 utils = [:];
 
-stage('get files') {
-    checkout scm;
-    echo "getting taskmap";
-    taskmap = readJSON file : "folder/taskmap.json";
-    assert taskmap.farm1.ip == "0.0.0";
-    echo "done getting taskmap";
-    echo "====================";
-    echo "loading utils";
-    utils = load "folder/pytest-utils.groovy";
-    assert utils.echoDebug("hi") == "hi";
-    echo "done loading utils"
+{ 
+    stage('get files') {
+        checkout scm;
+        echo "getting taskmap";
+        taskmap = readJSON file : "folder/taskmap.json";
+        assert taskmap.farm1.ip == "0.0.0";
+        echo "done getting taskmap";
+        echo "====================";
+        echo "loading utils";
+        utils = load "folder/pytest-utils.groovy";
+        assert utils.echoDebug("hi") == "hi";
+        echo "done loading utils"
+    }
 }
 
 def test_tasks = [:]
