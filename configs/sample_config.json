@@ -1,0 +1,9 @@
+{
+    "test"                  : "tests/test_sample/test_sample.py",
+    "testparams" : {
+        "param"             : ["param"],
+        "iter_param"        : ["iter_param_0", "iter_param_1"],
+        "list_param"        : [["list_param_1", "list_param_2"]],
+        "iter_list_param"   : [["iter_list_1_param_1", "iter_list_1_param_2"], ["iter_list_2_param_1", "iter_list_2_param_2"]]
+    }
+}
