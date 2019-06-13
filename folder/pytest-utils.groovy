@@ -17,6 +17,7 @@ def sayHi(purpose) {
 
 def echoDebug(debug) {
     echo "Debug: ${debug}"
+    return debug
 }
 
 // Clears and fetches new public keys for the specified host.
