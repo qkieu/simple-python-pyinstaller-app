@@ -82,7 +82,7 @@ some_node = node {
     stage('get files') {
         echo "getting taskmap"
         def workspace = pwd() 
-        taskmap = readJSON file : "${workspace}/folder/taskmap.json"
+        taskmap = readJSON file : "/var/jenkins_home/workspace/simple-python-app@script/folder/taskmap.json" //THIS IS DUMB
         assert taskmap.farm1.ip == "0.0.0"
         echo "done getting taskmap"
     }
