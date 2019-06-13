@@ -6,8 +6,9 @@
 import groovy.json.JsonSlurper
 
 // Load utilities
-workspace = pwd() 
+
 node {
+    def workspace = pwd() 
     def utils = load "${workspace}@script/pytest-utils.groovy"
 }
 
@@ -35,6 +36,7 @@ usersToNotify = params.EMAIL_LIST.split("\\r?\\n")
 
 def test_tasks = [:];
 
+def workspace = pwd() 
 File f = new File("${workspace}@script/taskmap.json");
 def taskmap = new JsonSlurper().parseText(f.text);
 
