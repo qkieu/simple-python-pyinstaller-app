@@ -33,7 +33,8 @@ def runTests(boardName, boardIp, configFiles, testStrings = "") {
         * run pytest with unit IP and configFiles
     */
     sh "#!/bin/bash\n \
-        echo $PWD"
+        echo $PWD 
+        && ls"
 
     // junit(allowEmptyResults: true, testResults: '**/tmp/*_result.xml')
 }
