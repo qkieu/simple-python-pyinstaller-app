@@ -11,6 +11,8 @@ bitbucketNotifySha = '';
 // This is used in sendStatusNotifications and typically summarizes which steps failed
 statusDetails = '';
 
+teststring = 'hello world!'
+
 def sayHi(purpose) {
     echo "Run Type: ${params.RUN_TYPE}, Node Name: $NODE_NAME, Purpose: ${purpose}"
 }
@@ -35,6 +37,8 @@ def runTests(boardName, boardIp, configFiles, testStrings = "") {
     sh "#!/bin/bash\n cd folder \
         && echo $PWD \
         && ls"
+
+    failedStages.add("${boardName} tests");
 
     // junit(allowEmptyResults: true, testResults: '**/tmp/*_result.xml')
 }
@@ -83,6 +87,12 @@ def generateTestNode(setup) {
                 }
             }
         }
+    }
+}
+
+def sendMyNotifications() {
+    failedStages.each {
+        echo "${it}"
     }
 }
 

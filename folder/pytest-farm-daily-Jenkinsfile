@@ -38,5 +38,6 @@ node {
         echo 'test pytest-utils on another node';
         assert utils.echoDebug("hi") == "hi";
         echo "done testing utils"
+        utils.sendMyNotifications();
     }
 }
