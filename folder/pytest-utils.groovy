@@ -17,7 +17,6 @@ def sayHi(purpose) {
 
 def echoDebug(debug) {
     echo "Debug: ${debug}"
-    return "${debug}"
 }
 
 // Clears and fetches new public keys for the specified host.
@@ -33,12 +32,9 @@ def runTests(boardName, boardIp, configFiles, testStrings = "") {
         * run pytest with unit IP and configFiles
     */
     sh "#!/bin/bash\n \
-        && python -m py_compile sources/add2vals.py sources/calc.py \
-        && py.test -v --junit-xml tmp/test_results.xml sources/test_calc.py"
+        echo $PWD"
 
-    // store xml results on build run.  The 'Test Result' is shown on the
-    // build number
-    junit(allowEmptyResults: true, testResults: '**/tmp/*_result.xml')
+    // junit(allowEmptyResults: true, testResults: '**/tmp/*_result.xml')
 }
 
 def listTests(configFiles) {
@@ -64,13 +60,7 @@ def generateTestNode(setup) {
     return {
         node {
             stage("${setup.'name'}: checkout on ${NODE_NAME}") {
-                // Checkout without clean
-                // utils.doCheckout(false)
-
-                // Since we might be moving boards about or doing full reflashes
-                // with them, update the public keys from the board before we
-                // start talking to it.
-                updatePublicHostKeys(setup.'ip');
+                echo "Checkout here"
             }
 
             //////////////////////////////    
@@ -78,15 +68,17 @@ def generateTestNode(setup) {
             //////////////////////////////
 
             stage("${setup.'name'} tests") {
-                try {
-                    sayHi("Running ${taskconfigs}");
-                    runTests(setup.'name', setup.'ip', setup.'configs', setup.'tests');
-                    currentBuild.result = 'SUCCESS';
-                } catch(err) {
-                    currentBuild.result = 'FAILURE';
-                    failedStages.add("${setup.'name'} tests");
-                    sendMyNotifications();
-                    throw err;
+                dir('folder') {
+                    try {
+                        sayHi("Running ${taskconfigs}");
+                        runTests(setup.'name', setup.'ip', setup.'configs', setup.'tests');
+                        currentBuild.result = 'SUCCESS';
+                    } catch(err) {
+                        currentBuild.result = 'FAILURE';
+                        failedStages.add("${setup.'name'} tests");
+                        //sendMyNotifications();
+                        throw err;
+                    }
                 }
             }
         }
