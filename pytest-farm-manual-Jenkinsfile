@@ -6,7 +6,9 @@
 import groovy.json.JsonSlurper
 
 // Load utilities
-def utils = load "pytest-utils.groovy"
+node {
+    def utils = load "pytest-utils.groovy";
+}
 
 // Git banches and notifiers
 scmBranchName = '*/master'
