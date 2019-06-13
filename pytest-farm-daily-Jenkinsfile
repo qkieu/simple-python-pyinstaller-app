@@ -33,7 +33,7 @@ usersToNotify = params.EMAIL_LIST.split("\\r?\\n")
 def test_tasks = [:];
 
 File f = new File('taskmap.json');
-def taskmap = new JsonSluper().parseText(f.text);
+def taskmap = new JsonSlurper().parseText(f.text);
 
 taskmap.each { taskname, tasksettings ->
     def setup = [:]
