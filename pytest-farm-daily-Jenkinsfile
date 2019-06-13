@@ -10,6 +10,22 @@ import groovy.json.JsonSlurper
 node {
     def workspace = pwd() 
     def utils = load "${workspace}@script/pytest-utils.groovy"
+    def test_tasks = [:];
+
+    File f = new File("${workspace}@script/taskmap.json");
+    def taskmap = new JsonSlurper().parseText(f.text);
+
+    taskmap.each { taskname, tasksettings ->
+    def setup = [:]
+    setup.'name'    = taskname;
+    setup.'ip'      = tasksettings.ip;
+    setup.'configs' = tasksettings.daily_configs;
+    setup.'tests'   = '';
+    setup.'type'    = 'pr_configs';
+
+    test_tasks[taskname] = utils.generateTestNode(setup);
+
+    parallel(test_tasks)
 }
 
 // Git banches and notifiers
@@ -34,25 +50,27 @@ usersToNotify = params.EMAIL_LIST.split("\\r?\\n")
 // echoDebug("AUTHOR_NAME: ${params.PULL_REQUEST_AUTHOR_DISPLAY_NAME}")
 // echoDebug("PR_REVIEWERS: ${params.PULL_REQUEST_REVIEWERS_EMAIL}")
 
-def test_tasks = [:];
+// def test_tasks = [:];
 
-def workspace = pwd() 
-File f = new File("${workspace}@script/taskmap.json");
-def taskmap = new JsonSlurper().parseText(f.text);
+// node {
+//     def workspace = pwd() 
+//     File f = new File("${workspace}@script/taskmap.json");
+//     def taskmap = new JsonSlurper().parseText(f.text);
+// }
 
-taskmap.each { taskname, tasksettings ->
-    def setup = [:]
-    setup.'name'    = taskname;
-    setup.'ip'      = tasksettings.ip;
-    setup.'configs' = tasksettings.daily_configs;
-    setup.'tests'   = '';
-    setup.'type'    = 'pr_configs';
+// taskmap.each { taskname, tasksettings ->
+//     def setup = [:]
+//     setup.'name'    = taskname;
+//     setup.'ip'      = tasksettings.ip;
+//     setup.'configs' = tasksettings.daily_configs;
+//     setup.'tests'   = '';
+//     setup.'type'    = 'pr_configs';
 
-    test_tasks[taskname] = utils.generateTestNode(setup);
-}
+//     test_tasks[taskname] = utils.generateTestNode(setup);
+// }
 
 // Run agent tasks in parallel
-parallel(test_tasks)
+// parallel(test_tasks)
 
 node('linux') {
     utils.sayHi('Sending Notifications')
