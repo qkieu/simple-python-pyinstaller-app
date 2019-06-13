@@ -6,8 +6,8 @@
 import groovy.json.JsonSlurper
 
 // Load utilities
+workspace = pwd() 
 node {
-    def workspace = pwd() 
     def utils = load "${workspace}@script/pytest-utils.groovy"
 }
 
