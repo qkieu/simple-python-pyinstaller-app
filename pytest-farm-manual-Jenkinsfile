@@ -1,0 +1,103 @@
+#!groovy
+
+// Jenkinsfile for manual build
+
+// Imports
+import groovy.json.JsonSlurper
+
+// Load utilities
+def utils = load "pytest-utils.groovy"
+
+// Git banches and notifiers
+scmBranchName = '*/master'
+scmRemoteRefs = ''
+usersToNotify = params.EMAIL_LIST.split("\\r?\\n")
+
+/////////////////////////////////
+// TODO: Implement build tests //
+/////////////////////////////////
+
+// // Bitbucket parameters used here
+// echoDebug("FROM_HASH: ${params.PULL_REQUEST_FROM_HASH}")
+// echoDebug("AUTHOR_EMAIL: ${params.PULL_REQUEST_AUTHOR_EMAIL}")
+// echoDebug("PR_ID: ${params.PULL_REQUEST_ID}")
+// // Bitbucket parameters not used here
+// echoDebug("FROM_REPO: ${params.PULL_REQUEST_FROM_SSH_CLONE_URL}")
+// echoDebug("FROM_BRANCH: ${params.PULL_REQUEST_FROM_BRANCH}")
+// echoDebug("TO_REPO: ${params.PULL_REQUEST_TO_SSH_CLONE_URL}")
+// echoDebug("TO_HASH: ${params.PULL_REQUEST_TO_HASH}")
+// echoDebug("TO_BRANCH: ${params.PULL_REQUEST_TO_BRANCH}")
+// echoDebug("AUTHOR_NAME: ${params.PULL_REQUEST_AUTHOR_DISPLAY_NAME}")
+// echoDebug("PR_REVIEWERS: ${params.PULL_REQUEST_REVIEWERS_EMAIL}")
+
+def test_tasks = [:]
+
+File f = new File('taskmap.json');
+def taskmap = new JsonSluper().parseText(f.text);
+
+def setup = [:]
+setup.'name'    = '';
+setup.'ip'      = '';
+setup.'configs' = '';
+setup.'tests'   = '';
+setup.'type'    = '';      // Manual input vs getting from daily and pr
+
+// Run agent tasks in parallel
+stage('Specify IP and Configs') {
+    setup.'type' =  input(   
+                        message: 'Unit IP and Config files', ok: 'Continue',
+                        parameters: [
+                            choice( name        : 'type', 
+                                    choices     : ['daily_configs', 'pr_configs', 'manual'],
+                                    description : 'Do you want to get configs from taskmap or manually specify configs?')
+                        ]
+                    );
+    if (setup.'type' == 'manual') {
+        def manual_setup =  input(   
+                                message: 'Unit IP and Config files', ok: 'Continue',
+                                parameters: [
+                                    string( name        : 'name', 
+                                            defaultValue: 'farm1',
+                                            description : 'What\'s the test unit\'s name? (which setup does it replicate? (for unique tolerance verification))'),
+                                    string( name        : 'ip', 
+                                            defaultValue: '0.0.0.0',
+                                            description : 'What\'s the test unit\'s IP address?'),
+                                    text(   name        : 'configs',
+                                            defaultValue: './configs/sample_config.json',
+                                            description : 'Please enter config files separated by a space')
+                                ]
+                            );
+        setup.'name' = manual_setup.'name';
+        setup.'ip' = manual_setup.'ip';
+        setup.'configs' = manual_setup.'configs';
+    } else {
+        setup.'name' =  input(   
+                            message: "Test / Unit name for ${setup.'type'}", ok: 'Continue'),
+                            parameters: [
+                                choice( name        : 'name', 
+                                        choices     : taskmap.keySet(),
+                                        description : 'What\'s the test unit\'s name?'),
+                            ]
+                        );
+        setup.'ip' = taskmap[setup.'name'].'ip';
+        setup.'configs' = taskmap[setup.'name'][setup.'type'];
+    } 
+
+    def testlist =  input(
+                        message: "Tests from ${setup.'type'} configs for ${setup.'name'} test unit at ${setup.'ip'}.", ok: 'Run',
+                        parameters: utils.listTests(setup.'configs').each { booleanParam(name: "${it}", defaultValue = false, description = '') }
+                );
+    
+    testlist.each {test, selected ->
+        if (selected) {
+            setup.'tests' += test + ' '
+        }
+    }
+}
+
+utils.generateTestNode(setup).call();
+
+node('linux') {
+    utils.sayHi('Sending Notifications')
+    // utils.sendMyNotifications(failedStages);
+}
