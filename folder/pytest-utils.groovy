@@ -71,7 +71,7 @@ def generateTestNode(setup) {
             stage("${setup.'name'} tests") {
                 dir('folder') {
                     try {
-                        sayHi("Running ${taskconfigs}");
+                        sayHi("Running ${setup.'configs'}");
                         runTests(setup.'name', setup.'ip', setup.'configs', setup.'tests');
                         currentBuild.result = 'SUCCESS';
                     } catch(err) {
