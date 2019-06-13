@@ -76,15 +76,20 @@
 //     // utils.sendMyNotifications(failedStages);
 // }
 
-def taskmap = [:]
+taskmap = [:];
+utils = Object();
 
-some_node = node {
+node {
     stage('get files') {
-        echo "getting taskmap" 
-        taskmap = readJSON file : "folder/taskmap.json" //THIS IS DUMB
-        assert taskmap.farm1.ip == "0.0.0"
-        echo "done getting taskmap"
+        checkout scm;
+        echo "getting taskmap";
+        taskmap = readJSON file : "folder/taskmap.json";
+        assert taskmap.farm1.ip == "0.0.0";
+        echo "done getting taskmap";
+        echo "====================";
+        echo "getting utils";
+        utils = load file : "folder/pytest-utils.groovy";
+        assert utils.echoDebug("hi") == "hi";
     }
 }
 
-some_node.call()
