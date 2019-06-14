@@ -56,12 +56,7 @@ def listTests(configFiles) {
     // return readFile('./tmp/test_list').trim()
 
     return "#!/bin/bash\n \
-        && source ./setup.sh \
-        && python3 -m runtest \
-            --ip 0.0.0.0 \
-            --configs ${configFiles} \
-            --list \
-        && deactivate".execute().text.split('\n')
+        python3".execute().text.split('\n')
 }
 
 def generateTestNode(setup) {
