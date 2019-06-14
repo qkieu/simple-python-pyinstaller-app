@@ -62,7 +62,7 @@ setup.'type'    = '';      // Manual input vs getting from daily and pr
             setup.'configs' = manual_setup.'configs';
         } else {
             setup.'name' =  input(   
-                                message: "Test / Unit name for ${setup.'type'}", ok: 'Continue'),
+                                message: "Test / Unit name for ${setup.'type'}", ok: 'Continue',
                                 parameters: [
                                     choice( name        : 'name', 
                                             choices     : taskmap.keySet(),
