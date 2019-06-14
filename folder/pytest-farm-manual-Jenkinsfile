@@ -73,10 +73,10 @@ setup.'type'    = '';      // Manual input vs getting from daily and pr
             setup.'configs' = taskmap[setup.'name'][setup.'type'];
         } 
 
-        // def testlist =  input(
-        //                     message: "Tests from ${setup.'type'} configs for ${setup.'name'} test unit at ${setup.'ip'}.", ok: 'Run',
-        //                     parameters: utils.listTests(setup.'configs').each { booleanParam(name: "${it}", defaultValue = false, description = '') }
-        //             );
+        def testlist =  input(
+                            message: "Tests from ${setup.'type'} configs for ${setup.'name'} test unit at ${setup.'ip'}.", ok: 'Run',
+                            parameters: utils.listTests(setup.'configs').each { booleanParam(name: "${it}", defaultValue = false, description = '') }
+                    );
         
         // testlist.each {test, selected ->
         //     if (selected) {
