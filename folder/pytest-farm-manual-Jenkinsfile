@@ -75,7 +75,7 @@ setup.'type'    = '';      // Manual input vs getting from daily and pr
 
         def testlist =  input(
                             message: "Tests from ${setup.'type'} configs for ${setup.'name'} test unit at ${setup.'ip'}.", ok: 'Run',
-                            parameters: utils.listTests(setup.'configs').collect { booleanParam(name: "${it}", defaultValue : false, description : '')
+                            parameters: utils.listTests(setup.'configs').collect { booleanParam(name: "${it}", defaultValue : false, description : ''}
                     );
         
         // testlist.each {test, selected ->
