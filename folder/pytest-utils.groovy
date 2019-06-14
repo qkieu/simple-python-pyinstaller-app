@@ -55,7 +55,8 @@ def listTests(configFiles) {
     //     && deactivate"
     // return readFile('./tmp/test_list').trim()
 
-    return "dir".execute().text.split('\n')
+    // return "dir".execute().text.split('\n')
+    return "asdfasdf\nsadfasdf\nsafasdfa\n".split('\n')
 }
 
 def generateTestNode(setup) {
