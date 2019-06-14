@@ -42,36 +42,36 @@ setup.'type'    = '';      // Manual input vs getting from daily and pr
                                         description : 'Do you want to get configs from taskmap or manually specify configs?')
                             ]
                         );
-        // if (setup.'type' == 'manual') {
-        //     def manual_setup =  input(   
-        //                             message: 'Unit IP and Config files', ok: 'Continue',
-        //                             parameters: [
-        //                                 string( name        : 'name', 
-        //                                         defaultValue: 'farm1',
-        //                                         description : 'What\'s the test unit\'s name? (which setup does it replicate? (for unique tolerance verification))'),
-        //                                 string( name        : 'ip', 
-        //                                         defaultValue: '0.0.0.0',
-        //                                         description : 'What\'s the test unit\'s IP address?'),
-        //                                 text(   name        : 'configs',
-        //                                         defaultValue: './configs/sample_config.json',
-        //                                         description : 'Please enter config files separated by a space')
-        //                             ]
-        //                         );
-        //     setup.'name' = manual_setup.'name';
-        //     setup.'ip' = manual_setup.'ip';
-        //     setup.'configs' = manual_setup.'configs';
-        // } else {
-        //     setup.'name' =  input(   
-        //                         message: "Test / Unit name for ${setup.'type'}", ok: 'Continue'),
-        //                         parameters: [
-        //                             choice( name        : 'name', 
-        //                                     choices     : taskmap.keySet(),
-        //                                     description : 'What\'s the test unit\'s name?'),
-        //                         ]
-        //                     );
-        //     setup.'ip' = taskmap[setup.'name'].'ip';
-        //     setup.'configs' = taskmap[setup.'name'][setup.'type'];
-        // } 
+        if (setup.'type' == 'manual') {
+            def manual_setup =  input(   
+                                    message: 'Unit IP and Config files', ok: 'Continue',
+                                    parameters: [
+                                        string( name        : 'name', 
+                                                defaultValue: 'farm1',
+                                                description : 'What\'s the test unit\'s name? (which setup does it replicate? (for unique tolerance verification))'),
+                                        string( name        : 'ip', 
+                                                defaultValue: '0.0.0.0',
+                                                description : 'What\'s the test unit\'s IP address?'),
+                                        text(   name        : 'configs',
+                                                defaultValue: './configs/sample_config.json',
+                                                description : 'Please enter config files separated by a space')
+                                    ]
+                                );
+            setup.'name' = manual_setup.'name';
+            setup.'ip' = manual_setup.'ip';
+            setup.'configs' = manual_setup.'configs';
+        } else {
+            setup.'name' =  input(   
+                                message: "Test / Unit name for ${setup.'type'}", ok: 'Continue'),
+                                parameters: [
+                                    choice( name        : 'name', 
+                                            choices     : taskmap.keySet(),
+                                            description : 'What\'s the test unit\'s name?'),
+                                ]
+                            );
+            setup.'ip' = taskmap[setup.'name'].'ip';
+            setup.'configs' = taskmap[setup.'name'][setup.'type'];
+        } 
 
         // def testlist =  input(
         //                     message: "Tests from ${setup.'type'} configs for ${setup.'name'} test unit at ${setup.'ip'}.", ok: 'Run',
