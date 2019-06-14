@@ -55,8 +55,7 @@ def listTests(configFiles) {
     //     && deactivate"
     // return readFile('./tmp/test_list').trim()
 
-    return "#!/bin/bash\n \
-        python3".execute().text.split('\n')
+    return "pysaf".execute().text.split('\n')
 }
 
 def generateTestNode(setup) {
