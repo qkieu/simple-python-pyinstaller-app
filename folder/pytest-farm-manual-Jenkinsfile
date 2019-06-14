@@ -78,11 +78,13 @@ setup.'type'    = '';      // Manual input vs getting from daily and pr
                             parameters: utils.listTests(setup.'configs').collect { booleanParam(name: "${it}", defaultValue : false, description : '')}
                     );
         
-        // testlist.each {test, selected ->
-        //     if (selected) {
-        //         setup.'tests' += test + ' '
-        //     }
-        // }
+        testlist.each {test, selected ->
+            if (selected) {
+                setup.'tests' += test + ' '
+            }
+        }
+
+        echo setup.'tests'
     }
 // }
 
