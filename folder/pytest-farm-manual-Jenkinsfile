@@ -65,7 +65,7 @@ setup.'type'    = '';      // Manual input vs getting from daily and pr
                                 message: "Test / Unit name for ${setup.'type'}", ok: 'Continue',
                                 parameters: [
                                     choice( name        : 'name', 
-                                            choices     : map.keySet().collect() as String[],
+                                            choices     : taskmap.keySet() as String[],
                                             description : 'What\'s the test unit\'s name?'),
                                 ]
                             );
