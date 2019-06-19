@@ -2,8 +2,6 @@
 
 // Add the name of a failing stage to this list
 failedStages = [];
-// This is used in sendStatusNotifications and typically summarizes which steps failed
-statusDetails = '';
 // git commit sha variable
 gitCommitSHA = '';
 // git checkout variables
@@ -13,7 +11,26 @@ bitbucketNotifySha = '';
 // This is used in sendStatusNotifications and typically summarizes which steps failed
 statusDetails = '';
 
-teststring = 'hello world!'
+//teststring = 'hello world!'
+
+def buildStuff() {
+    def buildTasks = [:]
+    buildTasks['A'] = {
+        node {
+            // step('ECHO A') {
+                echo 'Task A'   
+            // }
+        }
+    }
+    buildTasks['B'] = {
+        node {
+            // step('ECHO B') {
+                echo 'Task B'
+            // }
+        }
+    }
+    parallel(buildTasks)
+}
 
 def sayHi(purpose) {
     echo "Run Type: ${params.RUN_TYPE}, Node Name: $NODE_NAME, Purpose: ${purpose}"
@@ -55,8 +72,13 @@ def listTests(configFiles) {
     //     && deactivate"
     // return readFile('./tmp/test_list').trim()
 
-    // return "dir".execute().text.split('\n')
-    return "asdfasdf\nsadfasdf\nsafasdfa\n".split('\n')
+    return "#!/bin/bash\n \
+        && source ./setup.sh \
+        && python3 -m runtest \
+            --ip 0.0.0.0 \
+            --configs ${configFiles} \
+            --list \
+        && deactivate".execute().text.split('\n')
 }
 
 def generateTestNode(setup) {
