@@ -4,11 +4,10 @@
 
 // Global variables
 // scmBranchName = '*/master';
-scmBranchName = '*/topics/MAN-2976-jenkins-pytest'
-scmRemoteRefs = ''
-usersToNotify = params.EMAIL_LIST.split("\\r?\\n");
-buildNode = 'linux';
-archiveImage = false;
+// scmBranchName = '*/topics/MAN-2976-jenkins-pytest'
+// scmRemoteRefs = ''
+// buildNode = 'linux';
+// archiveImage = false;
 
 projectdir = 'jenkins-pytest'
 taskmap = [:];
