@@ -9,7 +9,7 @@
 // buildNode = 'linux';
 // archiveImage = false;
 
-projectdir = 'jenkins-pytest'
+projectdir = '.'
 taskmap = [:];
 utils = [:];
 
