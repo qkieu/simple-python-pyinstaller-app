@@ -28,7 +28,7 @@ setup.'configs' = '';
 setup.'tests'   = '';
 
 stage('Specify IP and Configs') {
-    node('linux') {
+    node {
         def type =  input(   
                             message: 'Unit IP and Config files', ok: 'Continue',
                             parameters: [
