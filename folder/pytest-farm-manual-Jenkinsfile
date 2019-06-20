@@ -9,7 +9,7 @@
 // buildNode = 'linux';
 // archiveImage = false;
 
-projectdir = '.'
+projectdir = 'folder/'
 taskmap = [:];
 utils = [:];
 
