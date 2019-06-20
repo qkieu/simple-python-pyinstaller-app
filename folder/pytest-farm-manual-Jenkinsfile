@@ -14,7 +14,7 @@ taskmap = [:];
 utils = [:];
 
 stage('Get files') {
-    node('linux') {
+    node {
         checkout scm;
         taskmap = readJSON file : "${projectdir}/taskmap.json";
         utils = load "${projectdir}/pytest-utils.groovy";
