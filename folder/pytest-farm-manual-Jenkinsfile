@@ -2,39 +2,34 @@
 
 // Jenkinsfile for manual build
 
+// Global variables
+// scmBranchName = '*/master';
+// scmBranchName = '*/topics/MAN-2976-jenkins-pytest'
+// scmRemoteRefs = ''
+// buildNode = 'linux';
+// archiveImage = false;
+
+projectdir = 'folder/'
 taskmap = [:];
 utils = [:];
 
-node {
-    stage('get files') {
+stage('Get files') {
+    node {
         checkout scm;
-        echo "getting taskmap";
-        taskmap = readJSON file : "folder/taskmap.json";
-        assert taskmap.farm1.ip == "0.0.0";
-        echo "done getting taskmap";
-        echo "====================";
-        echo "loading utils";
-        utils = load "folder/pytest-utils.groovy";
-        assert utils.echoDebug("hi") == "hi";
-        echo "done loading utils"
+        taskmap = readJSON file : "${projectdir}/taskmap.json";
+        utils = load "${projectdir}/pytest-utils.groovy";
     }
 }
-
-def test_tasks = [:]
-
 
 setup = [:]
 setup.'name'    = '';
 setup.'ip'      = '';
 setup.'configs' = '';
 setup.'tests'   = '';
-setup.'type'    = '';      // Manual input vs getting from daily and pr
 
-// Run agent tasks in parallel
-// node {
-//     checkout scm
-    stage('Specify IP and Configs') {
-        setup.'type' =  input(   
+stage('Specify IP and Configs') {
+    node {
+        def type =  input(   
                             message: 'Unit IP and Config files', ok: 'Continue',
                             parameters: [
                                 choice( name        : 'type', 
@@ -42,7 +37,7 @@ setup.'type'    = '';      // Manual input vs getting from daily and pr
                                         description : 'Do you want to get configs from taskmap or manually specify configs?')
                             ]
                         );
-        if (setup.'type' == 'manual') {
+        if (type == 'manual') {
             def manual_setup =  input(   
                                     message: 'Unit IP and Config files', ok: 'Continue',
                                     parameters: [
@@ -83,14 +78,21 @@ setup.'type'    = '';      // Manual input vs getting from daily and pr
                 setup.'tests' += test + ' '
             }
         }
-
-        echo setup.'tests'
     }
-// }
+}
 
-utils.generateTestNode(setup).call();
+stage('Build') {
+    node(buildNode) {
+        utils.ospreyBuild(true, false) // Build ARM and X86 only, skip OSP firmware
+    }
+}
 
-node('linux') {
-    utils.sayHi('Sending Notifications')
-    // utils.sendMyNotifications(failedStages);
+stage('Test') {
+    utils.generateTestNode(setup).call();
+}
+
+stage('Notify') {
+    node('linux') {
+        utils.sendMyNotifications();
+    }
 }
