@@ -2,9 +2,10 @@
 
 taskmap = [:];
 utils = [:];
+teststring = 'From main: sadfasfasdf'
 
-node {
-    stage('get files') {
+stage('get files') {
+    node {
         checkout scm;
         echo "getting taskmap";
         taskmap = readJSON file : "folder/taskmap.json";
@@ -18,26 +19,34 @@ node {
     }
 }
 
-def test_tasks = [:]
-
-taskmap.each { taskname, tasksettings -> 
-    def setup = [:]
-    setup.'name'    = taskname;
-    setup.'ip'      = tasksettings.ip;
-    setup.'configs' = tasksettings.pr_configs;
-    setup.'tests'   = '';
-    setup.'type'    = 'pr_configs';
-
-    test_tasks[taskname] = utils.generateTestNode(setup);
+stage('build') {
+    node {
+        utils.buildStuff();
+    }
 }
 
-parallel(test_tasks)
+stage('test') {
+    def test_tasks = [:]
 
-node {
-    stage('test') {
-        echo 'test pytest-utils on another node';
-        assert utils.echoDebug("hi") == "hi";
-        echo "done testing utils"
-        utils.sendMyNotifications();
+    taskmap.each { taskname, tasksettings -> 
+        def setup = [:]
+        setup.'name'    = taskname;
+        setup.'ip'      = tasksettings.ip;
+        setup.'configs' = tasksettings.pr_configs;
+        setup.'tests'   = '';
+        setup.'type'    = 'pr_configs';
+    
+        test_tasks[taskname] = utils.generateTestNode(setup);
     }
+    
+    parallel(test_tasks)    
+}
+
+
+stage('notify') {
+    echo env.BUILD_USER_EMAIL
+    echo 'test pytest-utils on another node';
+    assert utils.echoDebug("hi") == "hi";
+    echo "done testing utils"
+    utils.sendMyNotifications();
 }
