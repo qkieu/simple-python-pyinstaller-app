@@ -15,14 +15,6 @@ statusDetails = '';
 
 //teststring = 'hello world!'
 
-<<<<<<< HEAD
-def cancel(unit) {
-    q.items.findAll { it.task.name.contains("${unit}") }.each { q.cancel(it.task) }
-} 
-
-
-=======
->>>>>>> eb009fdd71858f8abb34f4d55c24b0485092d9f4
 def buildStuff() {
     def buildTasks = [:]
     buildTasks['A'] = {

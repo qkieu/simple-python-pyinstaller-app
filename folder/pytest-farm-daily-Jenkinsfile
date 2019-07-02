@@ -44,16 +44,8 @@ stage('test') {
 
 
 stage('notify') {
-<<<<<<< HEAD
-    echo env.BUILD_USER_EMAIL
-=======
->>>>>>> eb009fdd71858f8abb34f4d55c24b0485092d9f4
     echo 'test pytest-utils on another node';
     assert utils.echoDebug("hi") == "hi";
     echo "done testing utils"
     utils.sendMyNotifications();
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> eb009fdd71858f8abb34f4d55c24b0485092d9f4
