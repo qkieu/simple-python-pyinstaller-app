@@ -9,7 +9,6 @@ stage('get files') {
         checkout scm;
         echo "getting taskmap";
         taskmap = readJSON file : "folder/taskmap.json";
-        assert taskmap.farm1.ip == "0.0.0";
         echo "done getting taskmap";
         echo "====================";
         echo "loading utils";
