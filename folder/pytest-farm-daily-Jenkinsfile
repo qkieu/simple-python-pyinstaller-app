@@ -35,9 +35,9 @@ def extractHidden(string) {
 
 def taskFromBuildResult(taskMap, buildResult) {
     def newmap = [:]
-    buildResult.suites.each { unitIndex, res ->
+    buildResult.suites.each{res ->
         def unitName = res.enclosingBlockNames[0]
-        res.cases.each { index, detail ->
+        res.cases.each{detail ->
             if(detail.status == "FAILED") {
                 def configString = taskMap["${unitName}"].configs.split(" ").find { 
                                         testCase.contains(it.split('/').last().replaceAll('\\.json', '-'));
