@@ -185,7 +185,7 @@ stage('Specify IP and Configs') {
                         && wget --no-check-certificate https://serenity.tc.fluke.com:8443/job/osprey-${testType}-test-debug/${buildSelect.buildNum}/testReport/api/json \
                         -O ${projectdir}/tmp/buildresult.json";
                     buildResult = readJSON file : "${projectdir}/tmp/buildresult.json";
-                    mantask = taskFromBuildResult(taskMap, buildResult);
+                    mantask = taskFromBuildResult(taskmap, buildResult);
                     writeJSON file : 'output.json', json: mantask;
                 }
             }
