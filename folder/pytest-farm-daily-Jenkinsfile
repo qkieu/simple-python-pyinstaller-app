@@ -33,50 +33,29 @@ def extractHidden(string) {
     return [a, b];
 }
 
-// helper function to generate test script name
-def testScriptFromClassName(className) {
-    // expected className: testscripts.test_omtest.test_omtest
-    // reconstuct testScript to testscripts/test_omtest/test_omtest.py
-    def testScript = className.replaceAll('.', '/') + '.py';
-    return testScript
-}
-
-// helper function to get config file by backtracking taskmap
-def configFromName(taskMap, testCase, unitName) {
-    // expected testCase: test_omtest[auto_pon_otdr-0]
-    // check each config file in taskMap
-    taskMap.unitName.configs.split(" ").each {
-        // get the case string before the index (ex: auto_pon_otdr-)
-        caseName = it.subString(it.lastIndexOf('/') + 1).replaceAll('.json', '-');
-        // return the config if matches
-        if(testCase.contains(caseName)) {
-            return it;
-        }
-    }
-    // else return empty string
-    return "";
-}
-
 def taskFromBuildResult(taskMap, buildResult) {
     def newmap = [:]
     buildResult.suites.each { unitIndex, res ->
         def unitName = res.enclosingBlockNames[0]
         res.cases.each { index, detail ->
             if(detail.status == "FAILED") {
-                configString = configFromName(taskMap, detail.name, unitName) + ' ';
-                testString = testScriptFromClassName(detail.className) + '::' + detail.name + ' ';
+                def configString = taskMap["${unitName}"].configs.split(" ").find { 
+                                        testCase.contains(it.split('/').last().replaceAll('\\.json', '-'));
+                                        } + ' ';
+                def testString = className.replaceAll("\\.", "/") + '.py'; + '::' + detail.name + ' ';
                 if(newmap.containsKey(unitName)) {
-                    newmap.unitName.configs += configString;
-                    newmap.unitName.tests += testString;
+                    if(!newmap["${unitName}"].configs.contains(configString)) newmap["${unitName}"].configs += ' ' + configString;
+                    newmap["${unitName}"].tests += ' ' + testString;
                 } else {
-                    newmap.unitName = [:];
-                    newmap.unitName.configs = configString;
-                    newmap.unitName.ip = taskMap.unitName.ip;
-                    newmap.unitName.tests = testString;
+                    newmap["${unitName}"] = [:];
+                    newmap["${unitName}"].configs = configString;
+                    newmap["${unitName}"].ip = taskMap["${unitName}"].ip;
+                    newmap["${unitName}"].tests = testString;
                 }
             }
         }
     }
+    return newmap
 }
 
 // Get information from taskmap and tools from pytest-utils
@@ -85,13 +64,6 @@ stage('Get files') {
         checkout scm;
         taskmap = readJSON file : "${projectdir}/taskmap.json";
         utils = load "${projectdir}/pytest-utils.groovy";
-    }
-}
-
-// Get manual setup settings
-stage('Setup') {
-    node('linux') {
-        utils.setBuildSetup() 
     }
 }
 
@@ -186,7 +158,8 @@ stage('Specify IP and Configs') {
                         -O ${projectdir}/tmp/buildresult.json";
                     buildResult = readJSON file : "${projectdir}/tmp/buildresult.json";
                     mantask = taskFromBuildResult(taskmap, buildResult);
-                    writeJSON file : 'output.json', json: mantask;
+                    def jsonOut = readJSON text: groovy.json.JsonOutput.toJson(mantask)
+                    writeJSON file: 'output.json', json: jsonOut, pretty: 2
                 }
             }
         } catch(err) {
