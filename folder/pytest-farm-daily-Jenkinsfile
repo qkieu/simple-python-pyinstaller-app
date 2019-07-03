@@ -42,7 +42,7 @@ def taskFromBuildResult(taskMap, buildResult) {
                 def configString = taskMap["${unitName}"].configs.split(" ").find { 
                                         detail.name.contains(it.split('/').last().replaceAll('\\.json', '-'));
                                         } + ' ';
-                def testString = className.replaceAll("\\.", "/") + '.py'; + '::' + detail.name + ' ';
+                def testString = detail.className.replaceAll("\\.", "/") + '.py'; + '::' + detail.name + ' ';
                 if(newmap.containsKey(unitName)) {
                     if(!newmap["${unitName}"].configs.contains(configString)) newmap["${unitName}"].configs += ' ' + configString;
                     newmap["${unitName}"].tests += ' ' + testString;
