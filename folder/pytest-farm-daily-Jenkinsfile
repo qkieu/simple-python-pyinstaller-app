@@ -40,7 +40,7 @@ def taskFromBuildResult(taskMap, buildResult) {
         res.cases.each{detail ->
             if(detail.status == "FAILED") {
                 def configString = taskMap["${unitName}"].configs.split(" ").find { 
-                                        testCase.contains(it.split('/').last().replaceAll('\\.json', '-'));
+                                        detail.name.contains(it.split('/').last().replaceAll('\\.json', '-'));
                                         } + ' ';
                 def testString = className.replaceAll("\\.", "/") + '.py'; + '::' + detail.name + ' ';
                 if(newmap.containsKey(unitName)) {
