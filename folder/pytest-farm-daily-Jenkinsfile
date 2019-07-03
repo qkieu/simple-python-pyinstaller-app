@@ -181,7 +181,7 @@ stage('Specify IP and Configs') {
                                             booleanParam(name: "rerunAll", description: "Run all failed?", defaultValue: true)
                                     ]);
                     
-                    sh "mkdir ${projectdir}/tmp \
+                    sh "mkdir -p ${projectdir}/tmp \
                         && wget --no-check-certificate https://serenity.tc.fluke.com:8443/job/osprey-${testType}-test-debug/${buildSelect.buildNum}/testReport/api/json \
                         -O ${projectdir}/tmp/buildresult.json";
                     buildResult = readJSON file : "${projectdir}/tmp/buildresult.json";
