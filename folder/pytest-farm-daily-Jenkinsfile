@@ -181,7 +181,9 @@ stage('Specify IP and Configs') {
                                             booleanParam(name: "rerunAll", description: "Run all failed?", defaultValue: true)
                                     ]);
                     
-                    sh "wget ${env.JENKINS_URL}job/osprey-${testType}-test-debug/${buildSelect.buildNum}/testReport/api/json -O ${projectdir}/tmp/buildresult.json";
+                    sh "mkdir ${projectdir}/tmp \
+                        && wget https://serenity.tc.fluke.com:8443/job/osprey-${testType}-test-debug/${buildSelect.buildNum}/testReport/api/json \
+                        -O ${projectdir}/tmp/buildresult.json";
                     buildResult = readJSON file : "${projectdir}/tmp/buildresult.json";
                     mantask = taskFromBuildResult(taskMap, buildResult);
                     writeJSON file : 'output.json', json: mantask;
