@@ -1,188 +1,51 @@
 #!groovy
 
-// Jenkinsfile for manual build
-
-// Global setup variable
-setup = [:]
-// scmBranchName = '*/master';
-setup.scmBranchName = '*/topics/MAN-2976-jenkins-pytest';
-setup.scmRemoteRefs = '';
-setup.usersToNotify = params.EMAIL_LIST.split("\\r?\\n");
-setup.buildNode = 'linux';
-setup.buildImage = true;
-setup.runUnitTests = true;
-setup.archiveImage = false;
-setup.cleanCheckout = true;
-setup.imageFromFTP = '';
-
-// Other global variables
-projectdir = 'folder'
 taskmap = [:];
-mantask = [:]
 utils = [:];
+teststring = 'From main: sadfasfasdf'
 
-// Helper functions for differentiating between farms during test selects
-// since there can be duplicated test names
-def hidden(s) {
-    return "<p hidden> ${s}</p>";
-}
-
-def extractHidden(string) {
-    def a = string.split("<p hidden> ")[0];
-    def b = string.split("<p hidden> ")[1] - "</p>";
-    return [a, b];
-}
-
-def taskFromBuildResult(taskMap, buildResult) {
-    def newmap = [:]
-    buildResult.suites.each{res ->
-        def unitName = res.enclosingBlockNames[0]
-        res.cases.each{detail ->
-            if(detail.status == "FAILED") {
-                def configString = taskMap["${unitName}"].configs.split(" ").find { 
-                                        detail.name.contains(it.split('/').last().replaceAll('\\.json', '-'));
-                                        };
-                def testString = detail.className.replaceAll("\\.", "/") + '.py' + '::' + detail.name;
-                if(newmap.containsKey(unitName)) {
-                    if(!newmap["${unitName}"].configs.contains(configString)) newmap["${unitName}"].configs += ' ' + configString;
-                    newmap["${unitName}"].tests += ' ' + testString;
-                } else {
-                    newmap["${unitName}"] = [:];
-                    newmap["${unitName}"].configs = configString;
-                    newmap["${unitName}"].ip = taskMap["${unitName}"].ip;
-                    newmap["${unitName}"].tests = testString;
-                }
-            }
-        }
-    }
-    return newmap
-}
-
-// Get information from taskmap and tools from pytest-utils
-stage('Get files') {
-    node('linux') {
+stage('get files') {
+    node {
         checkout scm;
-        taskmap = readJSON file : "${projectdir}/taskmap.json";
-        utils = load "${projectdir}/pytest-utils.groovy";
+        echo "getting taskmap";
+        taskmap = readJSON file : "folder/taskmap.json";
+        assert taskmap.farm1.ip == "0.0.0";
+        echo "done getting taskmap";
+        echo "====================";
+        echo "loading utils";
+        utils = load "folder/pytest-utils.groovy";
+        assert utils.echoDebug("hi") == "hi";
+        echo "done loading utils"
     }
 }
 
-// Get manual test settings
-stage('Specify IP and Configs') {
-    node('linux') {
-        try {
-            timeout(time: 5, unit: 'MINUTES') {
-                def testType = input(
-                                message: "Test type", ok: 'Continue',
-                                parameters: [choice(name: "testType", choices: ["daily", "manual", "custom"], description: "Automatically get failed tests | Full custom")]
-                    );
-                if(testType == "custom") {
-                    // Get units from taskmaps
-                    def units =  input(   
-                                message: "Unit name", ok: 'Continue',
-                                parameters: taskmap.keySet().collect {booleanParam(name: "${it}", defaultValue : false, description : '')}
-                        );
-                    
-                    // Get configs and initialize manual task map units
-                    configs = [];
-                    units.each { unit, selected ->
-                        if (selected) {
-                            mantask["${unit}"] = [:];
-                            mantask["${unit}"]["ip"] = taskmap["${unit}"]["ip"]
-                            mantask["${unit}"]["configs"] = '';
-                            mantask["${unit}"]["tests"] = '';
-                            def desc = "${unit}\'s configs";
-                            configs << booleanParam(name: "all" + hidden(unit), defaultValue: false, description: desc);
-                            taskmap["${unit}"]["configs"].split(" ").each{
-                                configs << booleanParam(name: "${it}" + hidden(unit), defaultValue: false);
-                            }
-                        }
-                    };
-
-                    def unitconfigs = input (
-                                        message: "Unit configs", ok: 'Continue',
-                                        parameters: configs
-                                    );
-                    
-                    // Add configs to each unit
-                    def allList = []; // Start list to track which unit have all selected
-                    unitconfigs.each {config, selected ->
-                        if(selected) {
-                            def (cf, un) = extractHidden(config);
-                            // Add all configs to the unit
-                            if(cf == 'all') {
-                                mantask["${un}"]["configs"] = taskmap["${un}"]["configs"];
-                                allList << un;
-                            }
-                            // Add single selected config if all was not selected
-                            if(!allList.contains(un)) {
-                                mantask["${un}"]["configs"] += "${cf} ";
-                            }
-                        }
-                    }
-                
-                    // Get tests
-                    tests = [];
-                    mantask.each {unit, settings ->
-                        def desc = "${unit}\'s tests"
-                        utils.listTests(settings['configs']).each {
-                            if(it != "") {
-                                tests << booleanParam(name: "${it}" + hidden(unit), defaultValue: false, description : desc);
-                                desc = ""
-                            }
-                        }
-                    }
-                    
-                    def unittests = input (
-                                        message: "Unit tests", ok: 'Continue',
-                                        parameters: tests
-                                    );
-
-                    // Add tests to each unit
-                    unittests.each {test, selected ->
-                        if(selected) {
-                            def (ts, un) = extractHidden(test);
-                            mantask["${un}"]["tests"] += "${ts} ";
-                        }
-                    }   
-                } else {
-                    def buildSelect = input(
-                                        message: "Build number", ok: 'Continue',
-                                        parameters: [
-                                            string(name: "buildNum", description: "What build number?", trim: true),
-                                            booleanParam(name: "rerunAll", description: "Run all failed?", defaultValue: true)
-                                    ]);
-                    
-                    sh "mkdir -p ${projectdir}/tmp \
-                        && wget --no-check-certificate https://serenity.tc.fluke.com:8443/job/osprey-${testType}-test-debug/${buildSelect.buildNum}/testReport/api/json \
-                        -O ${projectdir}/tmp/buildresult.json";
-                    buildResult = readJSON file : "${projectdir}/tmp/buildresult.json";
-                    mantask = taskFromBuildResult(taskmap, buildResult);
-                    def jsonOut = readJSON text: groovy.json.JsonOutput.toJson(mantask)
-                    writeJSON file: 'output.json', json: jsonOut, pretty: 2
-                }
-            }
-        } catch(err) {
-            // Abort build if input timeout
-            currentBuild.result = 'ABORTED';
-            utils.sendMyNotifications();
-            error("No user input");
-        }
+stage('build') {
+    node {
+        utils.buildStuff();
     }
 }
 
-// Run Build if need to build image or run unit test
-if(setup.buildImage || setup.runUnitTests) {
-    stage('Build') {
-        node(setup.buildNode) {
-            utils.ospreyBuild()
-        }
+stage('test') {
+    def test_tasks = [:]
+
+    taskmap.each { taskname, tasksettings -> 
+        def setup = [:]
+        setup.'name'    = taskname;
+        setup.'ip'      = tasksettings.ip;
+        setup.'configs' = tasksettings.pr_configs;
+        setup.'tests'   = '';
+        setup.'type'    = 'pr_configs';
+    
+        test_tasks[taskname] = utils.generateTestNode(setup);
     }
+    
+    parallel(test_tasks)    
 }
 
-// Run Test if need to run unit tests
-if(setup.runUnitTests) {
-    stage('Test') {
-        utils.startTests(mantask);
-    }
+
+stage('notify') {
+    echo 'test pytest-utils on another node';
+    assert utils.echoDebug("hi") == "hi";
+    echo "done testing utils"
+    utils.sendMyNotifications();
 }
