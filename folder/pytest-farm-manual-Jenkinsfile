@@ -185,7 +185,7 @@ stage('Specify IP and Configs') {
                         // Get corresponding taskmap
                         try {
                             sh "wget --no-check-certificate \
-                            https://serenity.tc.fluke.com:8443/job/osprey-${testType}-test-debug/${buildSelect.buildNum}/artifact/${projectdir}/usedtaskmap.json \
+                            https://serenity.tc.fluke.com:8443/job/osprey-${testType}-test-debug/${buildSelect.buildNum}/artifact/jenkins-pytest/usedtaskmap.json \
                             -O ${projectdir}/usedtaskmap.json";
                             taskmap = readJSON file : "${projectdir}/usedtaskmap.json" 
                         } catch(err) {
