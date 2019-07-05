@@ -15,7 +15,7 @@ setup.cleanCheckout = true;
 setup.imageFromFTP = '';
 
 // Other global variables
-projectdir = 'jenkins-pytest'
+projectdir = 'folder'
 taskmap = [:];
 mantask = [:];
 utils = [:];
