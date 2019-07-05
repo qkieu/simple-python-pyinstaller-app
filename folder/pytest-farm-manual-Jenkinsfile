@@ -38,16 +38,16 @@ def taskFromBuildResult(taskMap, buildResult) {
     buildResult.suites.each{res ->
         def unitName = res.enclosingBlockNames[0]
         res.cases.each{detail ->
-            if(!(detail.errorStackTrace instanceof net.sf.json.JSONNull)) {
-                echo detail.className
-                try {
-                    echo detail.errorStackTrace 
-                } catch(err) {
-                    echo "problem"
-                }
+            // if(!(detail.errorStackTrace instanceof net.sf.json.JSONNull)) {
+            //     echo detail.className
+            //     try {
+            //         echo detail.errorStackTrace 
+            //     } catch(err) {
+            //         echo "problem"
+            //     }
                 
-            }
-            if(detail.status == "FAILED") {
+            // }
+            if(!(detail.errorStackTrace instanceof net.sf.json.JSONNull)) {
                 def configString = taskMap["${unitName}"].configs.split(" ").find { 
                                         detail.name.contains(it.split('/').last().replaceAll('\\.json', '-'));
                                         };
