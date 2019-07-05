@@ -38,7 +38,7 @@ def taskFromBuildResult(taskMap, buildResult) {
     buildResult.suites.each{res ->
         def unitName = res.enclosingBlockNames[0]
         res.cases.each{detail ->
-            if(detail.errorStackTrace) {
+            if(detail.errorStackTrace?) {
                 echo detail.className
                 echo detail.errorStackTrace 
             }
