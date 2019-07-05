@@ -38,15 +38,15 @@ def taskFromBuildResult(taskMap, buildResult) {
     buildResult.suites.each{res ->
         def unitName = res.enclosingBlockNames[0]
         res.cases.each{detail ->
-            // if(detail.errorStackTrace?.trim() != '') {
+            if(detail.errorStackTrace instanceof JSONNull) {
                 echo detail.className
                 try {
                     echo detail.errorStackTrace 
                 } catch(err) {
-                    echo "No error here"
+                    echo "problem"
                 }
                 
-            // }
+            }
             if(detail.status == "FAILED") {
                 def configString = taskMap["${unitName}"].configs.split(" ").find { 
                                         detail.name.contains(it.split('/').last().replaceAll('\\.json', '-'));
