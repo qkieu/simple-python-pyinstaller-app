@@ -38,6 +38,8 @@ def taskFromBuildResult(taskMap, buildResult) {
     buildResult.suites.each{res ->
         def unitName = res.enclosingBlockNames[0]
         res.cases.each{detail ->
+            echo detail.className
+            echo detail.errorStackTrace
             if(detail.status == "FAILED") {
                 def configString = taskMap["${unitName}"].configs.split(" ").find { 
                                         detail.name.contains(it.split('/').last().replaceAll('\\.json', '-'));
@@ -176,7 +178,7 @@ stage('Specify IP and Configs') {
                         // Get corresponding taskmap
                         try {
                             sh "wget --no-check-certificate \
-                            ${env.JENKINS_URL}job/osprey-${testType}-test-debug/${buildSelect.buildNum}/artifact/${projectdir}/usedtaskmap.json \
+                            https://serenity.tc.fluke.com:8443/job/osprey-${testType}-test-debug/${buildSelect.buildNum}/artifact/${projectdir}/usedtaskmap.json \
                             -O ${projectdir}/usedtaskmap.json";
                             taskmap = readJSON file : "${projectdir}/usedtaskmap.json" 
                         } catch(err) {
