@@ -6,5 +6,121 @@
     "farm2": {
         "ip": "10.250.199.2",
         "configs": "./configs/test_omtest/farm2/auto_pon_otdr.json ./configs/test_omtest/farm2/manual_pon_otdr_set1.json ./configs/test_omtest/farm2/manual_pon_otdr_set2.json ./configs/test_omtest/farm2/manual_pon_otdr_set3.json ./configs/test_omtest/farm2/manual_pon_otdr_set4.json ./configs/test_omtest/farm2/auto_otdr.json ./configs/test_omtest/farm2/manual_otdr_row0.json ./configs/test_omtest/farm2/manual_otdr_row2.json ./configs/test_omtest/farm2/manual_otdr_row6.json ./configs/test_omtest/farm2/manual_otdr_row10.json ./configs/test_omtest/farm2/manual_otdr_row12.json ./configs/test_omtest/farm2/manual_otdr_row13.json ./configs/test_omtest/farm2/datacenter_otdr.json ./configs/test_omtest/farm2/faultmap.json"
+    },
+    "farm3": {
+        "ip": "10.250.199.3",
+        "configs": "./configs/test_omtest/farm3/auto_pon_otdr.json ./configs/test_omtest/farm3/manual_pon_otdr_set1.json ./configs/test_omtest/farm3/manual_pon_otdr_set2.json ./configs/test_omtest/farm3/manual_pon_otdr_set3.json ./configs/test_omtest/farm3/manual_pon_otdr_set4.json ./configs/test_omtest/farm3/auto_otdr.json ./configs/test_omtest/farm3/manual_otdr_row0.json ./configs/test_omtest/farm3/manual_otdr_row2.json ./configs/test_omtest/farm3/manual_otdr_row6.json ./configs/test_omtest/farm3/manual_otdr_row10.json ./configs/test_omtest/farm3/manual_otdr_row12.json ./configs/test_omtest/farm3/manual_otdr_row13.json ./configs/test_omtest/farm3/faultmap.json"
+    },
+    "farm4": {
+        "ip": "10.250.199.4",
+        "configs": "./configs/test_omtest/farm4/auto_pon_otdr.json ./configs/test_omtest/farm4/manual_pon_otdr_set1.json ./configs/test_omtest/farm4/manual_pon_otdr_set2.json ./configs/test_omtest/farm4/manual_pon_otdr_set3.json ./configs/test_omtest/farm4/manual_pon_otdr_set4.json ./configs/test_omtest/farm4/auto_otdr.json ./configs/test_omtest/farm4/manual_otdr_row0.json ./configs/test_omtest/farm4/manual_otdr_row2.json ./configs/test_omtest/farm4/manual_otdr_row6.json ./configs/test_omtest/farm4/manual_otdr_row10.json ./configs/test_omtest/farm4/manual_otdr_row12.json ./configs/test_omtest/farm4/manual_otdr_row13.json ./configs/test_omtest/farm4/datacenter_otdr.json ./configs/test_omtest/farm4/faultmap.json"
+    },
+    "farm5": {
+        "ip": "10.250.199.5",
+        "configs": "./configs/test_omtest/farm5/auto_pon_otdr.json ./configs/test_omtest/farm5/manual_pon_otdr_set1.json ./configs/test_omtest/farm5/manual_pon_otdr_set2.json ./configs/test_omtest/farm5/manual_pon_otdr_set3.json ./configs/test_omtest/farm5/manual_pon_otdr_set4.json ./configs/test_omtest/farm5/auto_otdr.json ./configs/test_omtest/farm5/manual_otdr_row0.json ./configs/test_omtest/farm5/manual_otdr_row2.json ./configs/test_omtest/farm5/manual_otdr_row6.json ./configs/test_omtest/farm5/manual_otdr_row10.json ./configs/test_omtest/farm5/manual_otdr_row12.json ./configs/test_omtest/farm5/manual_otdr_row13.json ./configs/test_omtest/farm5/faultmap.json"
+    },
+    "farm6": {
+        "ip": "10.250.199.6",
+        "configs": "./configs/test_omtest/farm6/auto_pon_otdr.json ./configs/test_omtest/farm6/manual_pon_otdr_set1.json ./configs/test_omtest/farm6/manual_pon_otdr_set2.json ./configs/test_omtest/farm6/manual_pon_otdr_set3.json ./configs/test_omtest/farm6/manual_pon_otdr_set4.json ./configs/test_omtest/farm6/auto_otdr.json ./configs/test_omtest/farm6/manual_otdr_row0.json ./configs/test_omtest/farm6/manual_otdr_row2.json ./configs/test_omtest/farm6/manual_otdr_row6.json ./configs/test_omtest/farm6/manual_otdr_row10.json ./configs/test_omtest/farm6/manual_otdr_row12.json ./configs/test_omtest/farm6/manual_otdr_row13.json"
+    },
+    "farm7": {
+        "ip": "10.250.199.7",
+        "configs": "./configs/test_omtest/farm7/auto_pon_otdr.json ./configs/test_omtest/farm7/manual_pon_otdr_set1.json ./configs/test_omtest/farm7/manual_pon_otdr_set2.json ./configs/test_omtest/farm7/manual_pon_otdr_set3.json ./configs/test_omtest/farm7/manual_pon_otdr_set4.json ./configs/test_omtest/farm7/auto_otdr.json ./configs/test_omtest/farm7/manual_otdr_row0.json ./configs/test_omtest/farm7/manual_otdr_row2.json ./configs/test_omtest/farm7/manual_otdr_row6.json ./configs/test_omtest/farm7/manual_otdr_row10.json ./configs/test_omtest/farm7/manual_otdr_row12.json ./configs/test_omtest/farm7/manual_otdr_row13.json ./configs/test_omtest/farm7/faultmap.json"
+    },
+    "farm8": {
+        "ip": "10.250.199.8",
+        "configs": "./configs/test_omtest/farm8/auto_pon_otdr.json ./configs/test_omtest/farm8/manual_pon_otdr_set1.json ./configs/test_omtest/farm8/manual_pon_otdr_set2.json ./configs/test_omtest/farm8/manual_pon_otdr_set3.json ./configs/test_omtest/farm8/manual_pon_otdr_set4.json ./configs/test_omtest/farm8/auto_otdr.json ./configs/test_omtest/farm8/manual_otdr_row0.json ./configs/test_omtest/farm8/manual_otdr_row2.json ./configs/test_omtest/farm8/manual_otdr_row6.json ./configs/test_omtest/farm8/manual_otdr_row10.json ./configs/test_omtest/farm8/manual_otdr_row12.json ./configs/test_omtest/farm8/manual_otdr_row13.json ./configs/test_omtest/farm8/faultmap.json"
+    },
+    "farm9": {
+        "ip": "10.250.199.9",
+        "configs": "./configs/test_omtest/farm9/auto_pon_otdr.json ./configs/test_omtest/farm9/manual_pon_otdr_set1.json ./configs/test_omtest/farm9/manual_pon_otdr_set2.json ./configs/test_omtest/farm9/manual_pon_otdr_set3.json ./configs/test_omtest/farm9/manual_pon_otdr_set4.json ./configs/test_omtest/farm9/auto_otdr.json ./configs/test_omtest/farm9/manual_otdr_row0.json ./configs/test_omtest/farm9/manual_otdr_row2.json ./configs/test_omtest/farm9/manual_otdr_row6.json ./configs/test_omtest/farm9/manual_otdr_row10.json ./configs/test_omtest/farm9/manual_otdr_row12.json ./configs/test_omtest/farm9/manual_otdr_row13.json ./configs/test_omtest/farm9/faultmap.json"
+    },
+    "farm10": {
+        "ip": "10.250.199.10",
+        "configs": "./configs/test_omtest/farm10/auto_pon_otdr.json ./configs/test_omtest/farm10/manual_pon_otdr_set1.json ./configs/test_omtest/farm10/manual_pon_otdr_set2.json ./configs/test_omtest/farm10/manual_pon_otdr_set3.json ./configs/test_omtest/farm10/manual_pon_otdr_set4.json ./configs/test_omtest/farm10/auto_otdr.json ./configs/test_omtest/farm10/manual_otdr_row0.json ./configs/test_omtest/farm10/manual_otdr_row2.json ./configs/test_omtest/farm10/manual_otdr_row6.json ./configs/test_omtest/farm10/manual_otdr_row10.json ./configs/test_omtest/farm10/manual_otdr_row12.json ./configs/test_omtest/farm10/manual_otdr_row13.json"
+    },
+    "farm11": {
+        "ip": "10.250.199.11",
+        "configs": "./configs/test_omtest/farm11/auto_pon_otdr.json ./configs/test_omtest/farm11/manual_pon_otdr_set1.json ./configs/test_omtest/farm11/manual_pon_otdr_set2.json ./configs/test_omtest/farm11/manual_pon_otdr_set3.json ./configs/test_omtest/farm11/manual_pon_otdr_set4.json ./configs/test_omtest/farm11/auto_otdr.json ./configs/test_omtest/farm11/manual_otdr_row0.json ./configs/test_omtest/farm11/manual_otdr_row2.json ./configs/test_omtest/farm11/manual_otdr_row6.json ./configs/test_omtest/farm11/manual_otdr_row10.json ./configs/test_omtest/farm11/manual_otdr_row12.json ./configs/test_omtest/farm11/manual_otdr_row13.json ./configs/test_omtest/farm11/faultmap.json"
+    },
+    "farm12": {
+        "ip": "10.250.199.12",
+        "configs": "./configs/test_omtest/farm12/auto_pon_otdr.json ./configs/test_omtest/farm12/manual_pon_otdr_set1.json ./configs/test_omtest/farm12/manual_pon_otdr_set2.json ./configs/test_omtest/farm12/manual_pon_otdr_set3.json ./configs/test_omtest/farm12/manual_pon_otdr_set4.json ./configs/test_omtest/farm12/auto_otdr.json ./configs/test_omtest/farm12/manual_otdr_row0.json ./configs/test_omtest/farm12/manual_otdr_row2.json ./configs/test_omtest/farm12/manual_otdr_row6.json ./configs/test_omtest/farm12/manual_otdr_row10.json ./configs/test_omtest/farm12/manual_otdr_row12.json ./configs/test_omtest/farm12/manual_otdr_row13.json"
+    },
+    "farm13": {
+        "ip": "10.250.199.13",
+        "configs": "./configs/test_omtest/farm13/auto_pon_otdr.json ./configs/test_omtest/farm13/manual_pon_otdr_set1.json ./configs/test_omtest/farm13/manual_pon_otdr_set2.json ./configs/test_omtest/farm13/manual_pon_otdr_set3.json ./configs/test_omtest/farm13/manual_pon_otdr_set4.json ./configs/test_omtest/farm13/auto_otdr.json ./configs/test_omtest/farm13/manual_otdr_row0.json ./configs/test_omtest/farm13/manual_otdr_row2.json ./configs/test_omtest/farm13/manual_otdr_row6.json ./configs/test_omtest/farm13/manual_otdr_row10.json ./configs/test_omtest/farm13/manual_otdr_row12.json ./configs/test_omtest/farm13/manual_otdr_row13.json ./configs/test_omtest/farm13/faultmap.json"
+    },
+    "farm14": {
+        "ip": "10.250.199.14",
+        "configs": "./configs/test_omtest/farm14/manual_pon_otdr_set1.json ./configs/test_omtest/farm14/manual_pon_otdr_set2.json ./configs/test_omtest/farm14/manual_otdr_row0.json ./configs/test_omtest/farm14/manual_otdr_row2.json"
+    },
+    "farm15": {
+        "ip": "10.250.199.15",
+        "configs": "./configs/test_omtest/farm15/manual_pon_otdr_set1.json ./configs/test_omtest/farm15/manual_pon_otdr_set2.json ./configs/test_omtest/farm15/manual_otdr_row0.json ./configs/test_omtest/farm15/manual_otdr_row2.json"
+    },
+    "farm16": {
+        "ip": "10.250.199.16",
+        "configs": "./configs/test_omtest/farm16/manual_pon_otdr_set1.json ./configs/test_omtest/farm16/manual_pon_otdr_set2.json ./configs/test_omtest/farm16/manual_otdr_row0.json ./configs/test_omtest/farm16/manual_otdr_row2.json"
+    },
+    "farm17": {
+        "ip": "10.250.199.17",
+        "configs": "./configs/test_omtest/farm17/auto_pon_otdr.json ./configs/test_omtest/farm17/manual_pon_otdr_set1.json ./configs/test_omtest/farm17/manual_pon_otdr_set2.json ./configs/test_omtest/farm17/manual_pon_otdr_set3.json ./configs/test_omtest/farm17/manual_pon_otdr_set4.json ./configs/test_omtest/farm17/auto_otdr.json ./configs/test_omtest/farm17/manual_otdr_row0.json ./configs/test_omtest/farm17/manual_otdr_row2.json ./configs/test_omtest/farm17/manual_otdr_row6.json ./configs/test_omtest/farm17/manual_otdr_row10.json ./configs/test_omtest/farm17/manual_otdr_row12.json ./configs/test_omtest/farm17/manual_otdr_row13.json"
+    },
+    "farm18": {
+        "ip": "10.250.199.18",
+        "configs": "./configs/test_omtest/farm18/auto_pon_otdr.json ./configs/test_omtest/farm18/manual_pon_otdr_set1.json ./configs/test_omtest/farm18/manual_pon_otdr_set2.json ./configs/test_omtest/farm18/manual_pon_otdr_set3.json ./configs/test_omtest/farm18/manual_pon_otdr_set4.json ./configs/test_omtest/farm18/auto_otdr.json ./configs/test_omtest/farm18/manual_otdr_row0.json ./configs/test_omtest/farm18/manual_otdr_row2.json ./configs/test_omtest/farm18/manual_otdr_row6.json ./configs/test_omtest/farm18/manual_otdr_row10.json ./configs/test_omtest/farm18/manual_otdr_row12.json ./configs/test_omtest/farm18/manual_otdr_row13.json"
+    },
+    "farm19": {
+        "ip": "10.250.199.19",
+        "configs": "./configs/test_omtest/farm19/auto_pon_otdr.json ./configs/test_omtest/farm19/manual_pon_otdr_set1.json ./configs/test_omtest/farm19/manual_pon_otdr_set2.json ./configs/test_omtest/farm19/manual_pon_otdr_set3.json ./configs/test_omtest/farm19/manual_pon_otdr_set4.json ./configs/test_omtest/farm19/auto_otdr.json ./configs/test_omtest/farm19/manual_otdr_row0.json ./configs/test_omtest/farm19/manual_otdr_row2.json ./configs/test_omtest/farm19/manual_otdr_row6.json ./configs/test_omtest/farm19/manual_otdr_row10.json ./configs/test_omtest/farm19/manual_otdr_row12.json ./configs/test_omtest/farm19/manual_otdr_row13.json"
+    },
+    "farm20": {
+        "ip": "10.250.199.20",
+        "configs": "./configs/test_omtest/farm20/manual_pon_otdr_set1.json ./configs/test_omtest/farm20/manual_pon_otdr_set2.json ./configs/test_omtest/farm20/manual_otdr_row0.json ./configs/test_omtest/farm20/manual_otdr_row2.json"
+    },
+    "farm21": {
+        "ip": "10.250.199.21",
+        "configs": "./configs/test_omtest/farm21/manual_pon_otdr_set1.json ./configs/test_omtest/farm21/manual_pon_otdr_set2.json ./configs/test_omtest/farm21/manual_otdr_row0.json ./configs/test_omtest/farm21/manual_otdr_row2.json ./configs/test_omtest/farm21/datacenter_otdr.json"
+    },
+    "farm22": {
+        "ip": "10.250.199.22",
+        "configs": "./configs/test_omtest/farm22/manual_pon_otdr_set1.json ./configs/test_omtest/farm22/manual_pon_otdr_set2.json ./configs/test_omtest/farm22/manual_otdr_row0.json ./configs/test_omtest/farm22/manual_otdr_row2.json"
+    },
+    "farm23": {
+        "ip": "10.250.199.23",
+        "configs": "./configs/test_omtest/farm23/auto_pon_otdr.json ./configs/test_omtest/farm23/manual_pon_otdr_set1.json ./configs/test_omtest/farm23/manual_pon_otdr_set2.json ./configs/test_omtest/farm23/manual_pon_otdr_set3.json ./configs/test_omtest/farm23/manual_pon_otdr_set4.json ./configs/test_omtest/farm23/auto_otdr.json ./configs/test_omtest/farm23/manual_otdr_row0.json ./configs/test_omtest/farm23/manual_otdr_row2.json ./configs/test_omtest/farm23/manual_otdr_row6.json ./configs/test_omtest/farm23/manual_otdr_row10.json ./configs/test_omtest/farm23/manual_otdr_row12.json ./configs/test_omtest/farm23/manual_otdr_row13.json ./configs/test_omtest/farm23/faultmap.json"
+    },
+    "farm24": {
+        "ip": "10.250.199.24",
+        "configs": "./configs/test_omtest/farm24/manual_pon_otdr_set1.json ./configs/test_omtest/farm24/manual_pon_otdr_set2.json ./configs/test_omtest/farm24/manual_otdr_row0.json ./configs/test_omtest/farm24/manual_otdr_row2.json ./configs/test_omtest/farm24/faultmap.json"
+    },
+    "farm25": {
+        "ip": "10.250.199.25",
+        "configs": "./configs/test_omtest/farm25/auto_otdr.json ./configs/test_omtest/farm25/manual_otdr_row0.json ./configs/test_omtest/farm25/manual_otdr_row2.json ./configs/test_omtest/farm25/manual_otdr_row6.json ./configs/test_omtest/farm25/manual_otdr_row10.json ./configs/test_omtest/farm25/manual_otdr_row12.json ./configs/test_omtest/farm25/manual_otdr_row13.json ./configs/test_omtest/farm25/datacenter_otdr.json ./configs/test_omtest/farm25/faultmap.json"
+    },
+    "farm26": {
+        "ip": "10.250.199.26",
+        "configs": "./configs/test_omtest/farm26/auto_loopback_otdr.json ./configs/test_omtest/farm26/auto_otdr.json ./configs/test_omtest/farm26/manual_otdr_row0.json ./configs/test_omtest/farm26/manual_otdr_row2.json ./configs/test_omtest/farm26/manual_otdr_row6.json ./configs/test_omtest/farm26/manual_otdr_row10.json ./configs/test_omtest/farm26/manual_otdr_row12.json ./configs/test_omtest/farm26/manual_otdr_row13.json ./configs/test_omtest/farm26/datacenter_otdr.json ./configs/test_omtest/farm26/faultmap.json"
+    },
+    "farm27": {
+        "ip": "10.250.199.27",
+        "configs": "./configs/test_omtest/farm27/auto_otdr.json ./configs/test_omtest/farm27/manual_otdr_row0.json ./configs/test_omtest/farm27/manual_otdr_row2.json ./configs/test_omtest/farm27/manual_otdr_row6.json ./configs/test_omtest/farm27/manual_otdr_row10.json ./configs/test_omtest/farm27/manual_otdr_row12.json ./configs/test_omtest/farm27/manual_otdr_row13.json ./configs/test_omtest/farm27/datacenter_otdr.json ./configs/test_omtest/farm27/faultmap.json"
+    },
+    "farm28": {
+        "ip": "10.250.199.28",
+        "configs": "./configs/test_omtest/farm28/auto_loopback_otdr.json ./configs/test_omtest/farm28/auto_otdr.json ./configs/test_omtest/farm28/manual_otdr_row0.json ./configs/test_omtest/farm28/manual_otdr_row2.json ./configs/test_omtest/farm28/manual_otdr_row6.json ./configs/test_omtest/farm28/manual_otdr_row10.json ./configs/test_omtest/farm28/manual_otdr_row12.json ./configs/test_omtest/farm28/manual_otdr_row13.json ./configs/test_omtest/farm28/faultmap.json"
+    },
+    "farm29": {
+        "ip": "10.250.199.29",
+        "configs": "./configs/test_omtest/farm29/auto_pon_otdr.json ./configs/test_omtest/farm29/manual_pon_otdr_set1.json ./configs/test_omtest/farm29/manual_pon_otdr_set2.json ./configs/test_omtest/farm29/manual_pon_otdr_set3.json ./configs/test_omtest/farm29/manual_pon_otdr_set4.json ./configs/test_omtest/farm29/auto_otdr.json ./configs/test_omtest/farm29/manual_otdr_row0.json ./configs/test_omtest/farm29/manual_otdr_row2.json ./configs/test_omtest/farm29/manual_otdr_row6.json ./configs/test_omtest/farm29/manual_otdr_row10.json ./configs/test_omtest/farm29/manual_otdr_row12.json ./configs/test_omtest/farm29/manual_otdr_row13.json ./configs/test_omtest/farm29/faultmap.json"
+    },
+    "farm30": {
+        "ip": "10.250.199.30",
+        "configs": "./configs/test_omtest/farm30/auto_pon_otdr.json ./configs/test_omtest/farm30/manual_pon_otdr_span1.json ./configs/test_omtest/farm30/manual_pon_otdr_span2.json ./configs/test_omtest/farm30/manual_pon_otdr_set1.json ./configs/test_omtest/farm30/manual_pon_otdr_set2.json ./configs/test_omtest/farm30/manual_pon_otdr_set3.json ./configs/test_omtest/farm30/manual_pon_otdr_set4.json ./configs/test_omtest/farm30/auto_otdr.json ./configs/test_omtest/farm30/manual_otdr_row0.json ./configs/test_omtest/farm30/manual_otdr_row2.json ./configs/test_omtest/farm30/manual_otdr_row6.json ./configs/test_omtest/farm30/manual_otdr_row10.json ./configs/test_omtest/farm30/manual_otdr_row12.json ./configs/test_omtest/farm30/manual_otdr_row13.json ./configs/test_omtest/farm30/datacenter_otdr.json ./configs/test_omtest/farm30/faultmap.json"
+    },
+    "farm31": {
+        "ip": "10.250.199.31",
+        "configs": "./configs/test_omtest/farm31/auto_pon_otdr.json ./configs/test_omtest/farm31/manual_pon_otdr_set1.json ./configs/test_omtest/farm31/manual_pon_otdr_set2.json ./configs/test_omtest/farm31/manual_pon_otdr_set3.json ./configs/test_omtest/farm31/manual_pon_otdr_set4.json ./configs/test_omtest/farm31/auto_otdr.json ./configs/test_omtest/farm31/manual_otdr_row0.json ./configs/test_omtest/farm31/manual_otdr_row2.json ./configs/test_omtest/farm31/manual_otdr_row6.json ./configs/test_omtest/farm31/manual_otdr_row10.json ./configs/test_omtest/farm31/manual_otdr_row12.json ./configs/test_omtest/farm31/manual_otdr_row13.json ./configs/test_omtest/farm31/datacenter_otdr.json ./configs/test_omtest/farm31/faultmap.json"
     }
 }
