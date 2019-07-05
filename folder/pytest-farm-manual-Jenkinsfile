@@ -2,97 +2,221 @@
 
 // Jenkinsfile for manual build
 
-// Global variables
+// Global setup variable
+setup = [:]
 // scmBranchName = '*/master';
-// scmBranchName = '*/topics/MAN-2976-jenkins-pytest'
-// scmRemoteRefs = ''
-// buildNode = 'linux';
-// archiveImage = false;
+setup.scmBranchName = '*/topics/MAN-2976-jenkins-pytest';
+setup.usersToNotify = "quang.kieu@flukenetworks.com";
+setup.buildNode = 'linux';
+setup.buildImage = true;
+setup.runUnitTests = true;
+setup.archiveImage = false;
+setup.cleanCheckout = true;
+setup.imageFromFTP = '';
 
-projectdir = 'folder/'
+// Other global variables
+projectdir = 'jenkins-pytest'
 taskmap = [:];
+mantask = [:];
 utils = [:];
 
+// Helper functions for differentiating between farms during test selects
+// since there can be duplicated test names
+def hidden(s) {
+    return "<p hidden> ${s}</p>";
+}
+
+def extractHidden(string) {
+    def a = string.split("<p hidden> ")[0];
+    def b = string.split("<p hidden> ")[1] - "</p>";
+    return [a, b];
+}
+
+// Helper functions to build a taskmap from Jenkins build results
+def taskFromBuildResult(taskMap, buildResult) {
+    def newMap = [:]
+    buildResult.suites.each{res ->
+        def unitName = res.enclosingBlockNames[0]
+        res.cases.each{detail ->
+            if(detail.status == "FAILED") {
+                def configString = taskMap["${unitName}"].configs.split(" ").find { 
+                                        detail.name.contains(it.split('/').last().replaceAll('\\.json', '-'));
+                                        };
+                def testString = detail.name;
+                if(newMap.containsKey(unitName)) {
+                    if(!newMap["${unitName}"].configs.contains(configString)) newMap["${unitName}"].configs += ' ' + configString;
+                    newMap["${unitName}"].tests += ' ' + testString;
+                } else {
+                    newMap["${unitName}"] = [:];
+                    newMap["${unitName}"].configs = configString;
+                    newMap["${unitName}"].ip = taskMap["${unitName}"].ip;
+                    newMap["${unitName}"].tests = testString;
+                }
+            }
+        }
+    }
+    return newMap
+}
+
+def editTaskMap(oldMap) {
+    def newMap = [:]
+    // Get units from oldMap
+    def units =  input(   
+                message: "Unit name", ok: 'Continue',
+                parameters: oldMap.keySet().collect {booleanParam(name: "${it}", defaultValue : false, description : '')}
+        );
+    
+    // Get configs and initialize new map units
+    configs = [];
+    units.each { unit, selected ->
+        if (selected) {
+            newMap["${unit}"] = [:];
+            newMap["${unit}"]["ip"] = oldMap["${unit}"]["ip"]
+            newMap["${unit}"]["configs"] = '';
+            newMap["${unit}"]["tests"] = '';
+            def desc = "${unit}\'s configs";
+            configs << booleanParam(name: "all" + hidden(unit), defaultValue: false, description: desc);
+            oldMap["${unit}"]["configs"].split(" ").each{
+                configs << booleanParam(name: "${it}" + hidden(unit), defaultValue: false);
+            }
+        }
+    };
+
+    def unitconfigs = input (
+                        message: "Unit configs", ok: 'Continue',
+                        parameters: configs
+                    );
+    
+    // Add configs to each unit
+    def allList = []; // Start list to track which unit have all selected
+    unitconfigs.each {config, selected ->
+        if(selected) {
+            def (cf, un) = extractHidden(config);
+            // Add all configs to the unit
+            if(cf == 'all') {
+                newMap["${un}"]["configs"] = oldMap["${un}"]["configs"];
+                allList << un;
+            }
+            // Add single selected config if all was not selected
+            if(!allList.contains(un)) {
+                newMap["${un}"]["configs"] += "${cf} ";
+            }
+        }
+    }
+
+    // Get tests
+    tests = [];
+    newMap.each {unit, settings ->
+        def desc = "${unit}\'s tests"
+        utils.listTests(settings['configs']).each {
+            def shouldAdd = oldMap["${unit}"].containsKey('tests') ? oldMap["${unit}"].tests.contains(it) : true;
+            if(it != "" && shouldAdd) {
+                tests << booleanParam(name: "${it}" + hidden(unit), defaultValue: false, description : desc);
+                desc = ""
+            }
+        }
+    }
+    
+    def unittests = input (
+                        message: "Unit tests", ok: 'Continue',
+                        parameters: tests
+                    );
+
+    // Add tests to each unit
+    unittests.each {test, selected ->
+        if(selected) {
+            def (ts, un) = extractHidden(test);
+            newMap["${un}"]["tests"] += "${ts} ";
+        }
+    }
+    return newMap   
+}
+
+// Get information from taskmap and tools from pytest-utils
 stage('Get files') {
-    node {
+    node('linux') {
         checkout scm;
         taskmap = readJSON file : "${projectdir}/taskmap.json";
         utils = load "${projectdir}/pytest-utils.groovy";
     }
 }
 
-setup = [:]
-setup.'name'    = '';
-setup.'ip'      = '';
-setup.'configs' = '';
-setup.'tests'   = '';
+// Get manual setup settings
+stage('Setup') {
+    node('linux') {
+        utils.setBuildSetup() 
+    }
+}
 
+// Get manual test settings
 stage('Specify IP and Configs') {
-    node {
-        def type =  input(   
-                            message: 'Unit IP and Config files', ok: 'Continue',
-                            parameters: [
-                                choice( name        : 'type', 
-                                        choices     : ['daily_configs', 'pr_configs', 'manual'],
-                                        description : 'Do you want to get configs from taskmap or manually specify configs?')
-                            ]
-                        );
-        if (type == 'manual') {
-            def manual_setup =  input(   
-                                    message: 'Unit IP and Config files', ok: 'Continue',
-                                    parameters: [
-                                        string( name        : 'name', 
-                                                defaultValue: 'farm1',
-                                                description : 'What\'s the test unit\'s name? (which setup does it replicate? (for unique tolerance verification))'),
-                                        string( name        : 'ip', 
-                                                defaultValue: '0.0.0.0',
-                                                description : 'What\'s the test unit\'s IP address?'),
-                                        text(   name        : 'configs',
-                                                defaultValue: './configs/sample_config.json',
-                                                description : 'Please enter config files separated by a space')
-                                    ]
-                                );
-            setup.'name' = manual_setup.'name';
-            setup.'ip' = manual_setup.'ip';
-            setup.'configs' = manual_setup.'configs';
-        } else {
-            setup.'name' =  input(   
-                                message: "Test / Unit name for ${setup.'type'}", ok: 'Continue',
-                                parameters: [
-                                    choice( name        : 'name', 
-                                            choices     : taskmap.keySet().collect(),
-                                            description : 'What\'s the test unit\'s name?'),
-                                ]
-                            );
-            setup.'ip' = taskmap[setup.'name'].'ip';
-            setup.'configs' = taskmap[setup.'name'][setup.'type'];
-        } 
-
-        def testlist =  input(
-                            message: "Tests from ${setup.'type'} configs for ${setup.'name'} test unit at ${setup.'ip'}.", ok: 'Run',
-                            parameters: utils.listTests(setup.'configs').collect { booleanParam(name: "${it}", defaultValue : false, description : '')}
+    node('linux') {
+        try {
+            timeout(time: 5, unit: 'MINUTES') {
+                def testType = input(
+                                message: "Test type", ok: 'Continue',
+                                parameters: [choice(name: "testType", choices: ["daily", "manual", "custom"], description: "Automatically get failed tests | Full custom")]
                     );
-        
-        testlist.each {test, selected ->
-            if (selected) {
-                setup.'tests' += test + ' '
+                if(testType == "custom") {
+                    mantask = editTaskMap(taskmap)
+                } else {
+                    def buildSelect = input(
+                                        message: "Build number", ok: 'Continue',
+                                        parameters: [
+                                            string(name: "buildNum", description: "What build number?", trim: true),
+                                            booleanParam(name: "rerunAll", description: "Run all failed?", defaultValue: true)
+                                    ]);
+                    try {
+                        sh "mkdir -p ${projectdir}/tmp \
+                        && wget --no-check-certificate \
+                        ${env.JENKINS_URL}job/osprey-${testType}-test-debug/${buildSelect.buildNum}/testReport/api/json \
+                        -O ${projectdir}/tmp/buildresult.json";
+                        buildResult = readJSON file : "${projectdir}/tmp/buildresult.json";
+
+                        // Get corresponding taskmap
+                        try {
+                            sh "wget --no-check-certificate \
+                            ${env.JENKINS_URL}job/osprey-${testType}-test-debug/${buildSelect.buildNum}/artifact/${projectdir}/usedtaskmap.json \
+                            -O ${projectdir}/usedtaskmap.json";
+                            taskmap = readJSON file : "${projectdir}/usedtaskmap.json" 
+                        } catch(err) {
+                            utils.echoDebug("No past taskmap saved for ${testType} ${buildSelect.buildNum}. Using current taskmap")
+                        }
+
+                        mantask = taskFromBuildResult(taskmap, buildResult);
+                    } catch(err) {
+                        currentBuild.result = 'FAILED';
+                        error("Fail to get and parse report for ${testType} ${buildSelect.buildNum}")
+                        throw err;
+                    }
+                    
+                    if(!buildSelect.rerunAll) {
+                        mantask = editTaskMap(mantask);
+                    }
+                }
             }
+        } catch(err) {
+            // Abort build if input timeout
+            currentBuild.result = 'ABORTED';
+            utils.sendMyNotifications();
+            error("No user input");
+            throw err;
         }
     }
 }
 
-stage('Build') {
-    node(buildNode) {
-        utils.ospreyBuild(true, false) // Build ARM and X86 only, skip OSP firmware
+// Run Build if need to build image or run unit test
+if(setup.buildImage || setup.runUnitTests) {
+    stage('Build') {
+        node(setup.buildNode) {
+            utils.ospreyBuild()
+        }
     }
 }
 
-stage('Test') {
-    utils.generateTestNode(setup).call();
-}
-
-stage('Notify') {
-    node('linux') {
-        utils.sendMyNotifications();
+// Run Test if need to run unit tests
+if(setup.runUnitTests) {
+    stage('Test') {
+        utils.startTests(mantask);
     }
 }
