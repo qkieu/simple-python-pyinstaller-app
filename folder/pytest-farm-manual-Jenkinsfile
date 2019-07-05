@@ -142,11 +142,11 @@ stage('Get files') {
 }
 
 // Get manual setup settings
-stage('Setup') {
-    node('linux') {
-        utils.setBuildSetup() 
-    }
-}
+// stage('Setup') {
+//     node('linux') {
+//         utils.setBuildSetup() 
+//     }
+// }
 
 // Get manual test settings
 stage('Specify IP and Configs') {
