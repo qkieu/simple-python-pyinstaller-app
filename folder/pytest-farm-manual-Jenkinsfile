@@ -171,7 +171,7 @@ stage('Specify IP and Configs') {
                     try {
                         sh "mkdir -p ${projectdir}/tmp \
                         && wget --no-check-certificate \
-                        ${env.JENKINS_URL}job/osprey-${testType}-test-debug/${buildSelect.buildNum}/testReport/api/json \
+                         https://serenity.tc.fluke.com:8443/job/osprey-${testType}-test-debug/${buildSelect.buildNum}/testReport/api/json \
                         -O ${projectdir}/tmp/buildresult.json";
                         buildResult = readJSON file : "${projectdir}/tmp/buildresult.json";
 
