@@ -75,6 +75,8 @@ def editTaskMap(oldMap) {
                 parameters: oldMap.keySet().collect {booleanParam(name: "${it}", defaultValue : false, description : '')}
         );
     
+    if(units.find{unit, selected -> selected} == []) echo "no unit is selected"
+
     // Get configs and initialize new map units
     configs = [];
     units.each { unit, selected ->
@@ -115,10 +117,10 @@ def editTaskMap(oldMap) {
 
     // Get tests
     tests = [];
-    newMap.each {unit, settings ->
-        def desc = "${unit}\'s tests"
+    newMap.each {un, settings ->
+        def desc = "${un}\'s tests"
         utils.listTests(settings['configs']).each {
-            def shouldAdd = oldMap["${unit}"].containsKey('tests') ? oldMap["${unit}"].tests.contains(it) : true;
+            def shouldAdd = oldMap["${un}"].containsKey('tests') ? oldMap["${un}"].tests.contains(it) : true;
             if(it != "" && shouldAdd) {
                 tests << booleanParam(name: "${it}" + hidden(unit), defaultValue: false, description : desc);
                 desc = ""
@@ -136,6 +138,9 @@ def editTaskMap(oldMap) {
         if(selected) {
             def (ts, un) = extractHidden(test);
             newMap["${un}"]["tests"] += "${ts} ";
+        } 
+        if(newMap["${un}"]["tests"] == '' && oldMap["${un}"].containsKey('tests')) {
+            newMap["${un}"]["tests"] = oldMap["${un}"]["tests"];
         }
     }
     return newMap   
